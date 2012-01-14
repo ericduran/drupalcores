@@ -31,6 +31,10 @@ def main():
     #git.Git(opts.temp).clone(args[0])
 
     # Set up the sqlite3 db
+    setDatabase();
+
+def setDatabase():
+    # Set up the sqlite3 db
     conn = sqlite3.connect('cores.db')
     c = conn.cursor()
     c.execute('''create table if not exists users
