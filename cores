@@ -20,7 +20,6 @@ def config():
 
     return parser.parse_args()
 
-
 def main():
     (opts, args) = config()
 
@@ -28,7 +27,18 @@ def main():
     #@TODO: install bleeding-edge gitpython (instead of old debian version),
     # maybe .clone will work, see:
     # - https://github.com/davvid/GitPython/blob/00c5497f190172765cc7a53ff9d8852a26b91676/CHANGES#L63-67
-    git.Git(opts.temp).clone(args[0])
+
+    #git.Git(opts.temp).clone(args[0])
+
+    # Set up the sqlite3 db
+    conn = sqlite3.connect('cores.db')
+    c = conn.cursor()
+    c.execute('''create table if not exists users
+    (username text, count real)''')
+    c.execute('''create table if not exists hash
+    (hash test, timestampt real)''')
+    conn.commit()
+    c.close()
 
 if __name__ == '__main__':
     main()
