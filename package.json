@@ -9,6 +9,6 @@
     }
   , "dependencies": {
       "sqlite": "1.0.4"
-    , "node-git": ">= 0.0.6"
+    , "git": ">= 0.1.3"
   }
 }
