@@ -21,6 +21,10 @@ def config():
     return parser.parse_args()
 
 def main():
+    # adding global vars to the sqlite connect
+    # and the cursor, I imaging this isn't the greatest
+    # implementation but it seems easy for me. Fee
+    # free to re-write it better -- Eric J. Duran :)
     global conn
     global c
     (opts, args) = config()
