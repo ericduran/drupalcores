@@ -3,6 +3,7 @@
 
 import sys
 import git
+import sqlite3
 from optparse import OptionParser
 
 #optparse stuff
