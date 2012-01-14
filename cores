@@ -25,6 +25,10 @@ def main():
     #the repo we've been asked to parse
     git.Git(opts.temp).clone(args[0])
 
+    # Set up the sqlite3 db
+    conn = sqlite3.connect('cores.db')
+    c = conn.cursor()
+
 if __name__ == '__main__':
     main()
 
