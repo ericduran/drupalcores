@@ -52,6 +52,10 @@ def setDatabase():
     (hash test, timestampt real)''')
     conn.commit()
 
+def lastHash(hash):
+    #Add the last has to the sqlite database
+    c.execute('insert into hash values (?)', hash)
+
 if __name__ == '__main__':
     main()
 
