@@ -29,6 +29,8 @@ def main():
     c = conn.cursor()
     c.execute('''create table users
     (users text, count real)''')
+    c.execute('''create table hash
+    (hash test, timestampt real)''')
     conn.commit()
     c.close()
 
