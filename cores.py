@@ -28,6 +28,10 @@ def main():
     #sqlite db
     conn = sqlite3.connect('cores.db')
     c = conn.cursor()
+
+    # Set up the sqlite3 db
+    setDatabase();
+
     #the repo we've been asked to parse
     #@TODO: install bleeding-edge gitpython (instead of old debian version),
     # maybe .clone will work, see:
@@ -35,8 +39,8 @@ def main():
 
     #git.Git(opts.temp).clone(args[0])
 
-    # Set up the sqlite3 db
-    setDatabase();
+
+    # close the cursor
     c.close();
 
 
