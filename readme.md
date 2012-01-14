@@ -1,0 +1,6 @@
+# DrupalCores
+
+
+## Dependencies
+
+* pythong-git
