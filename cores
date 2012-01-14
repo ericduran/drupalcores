@@ -1,9 +1,38 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import git
+import sys
+from git import *
+from optparse import OptionParser
 
-#print git
+#optparse stuff
+def config():
+    """Definition for acceptable options with python's optparse library.
+    """
+    parser = OptionParser(usage='%prog [options] PATH')
+    parser.add_option('-b', '--branch', dest='branch', default='master',
+        help="Branch you'd like to parse when checking out REPO.")
+    parser.add_option('-t', '--temp', dest='temp', default='tmp/',
+        help="Temporary directory you'd like to make a mess in.")
+
+    return parser.parse_args()
+
+
+def main():
+    (opts, args) = config()
+
+    #the repo we've been asked to parse
+
+    #@TODO: make this work (see: http://packages.python.org/GitPython/0.3.1/tutorial.html):
+    # run: `./cores  git://drupalcode.org/project/drupal.git`
+#   repo = Repo(opts.temp)
+#   code = repo.clone(args[0])
+#   print('boop')
+#   print(conf)
+#   print(code)
+
+if __name__ == '__main__':
+    main()
 
 # vim: et:ts=4:sw=4:sts=4
 
