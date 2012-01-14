@@ -10,9 +10,11 @@ from optparse import OptionParser
 def config():
     """Definition for acceptable options with python's optparse library.
     """
-    parser = OptionParser(usage='%prog [options] PATH')
+    parser = OptionParser(usage='%prog [options] URL', description='Parse '
+            'gitrepository at URL and generate commit-statistics to reward'
+            'your users')
     parser.add_option('-b', '--branch', dest='branch', default='master',
-        help="Branch you'd like to parse when checking out REPO.")
+        help="Branch you'd like to parse when checking out URL.")
     parser.add_option('-t', '--temp', dest='temp', default='tmp/',
         help="Temporary directory you'd like to make a mess in.")
 
