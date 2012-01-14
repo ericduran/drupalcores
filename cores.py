@@ -21,8 +21,13 @@ def config():
     return parser.parse_args()
 
 def main():
+    global conn
+    global c
     (opts, args) = config()
 
+    #sqlite db
+    conn = sqlite3.connect('cores.db')
+    c = conn.cursor()
     #the repo we've been asked to parse
     #@TODO: install bleeding-edge gitpython (instead of old debian version),
     # maybe .clone will work, see:
@@ -32,17 +37,16 @@ def main():
 
     # Set up the sqlite3 db
     setDatabase();
+    c.close();
+
 
 def setDatabase():
     # Set up the sqlite3 db
-    conn = sqlite3.connect('cores.db')
-    c = conn.cursor()
     c.execute('''create table if not exists users
     (username text, count real)''')
     c.execute('''create table if not exists hash
     (hash test, timestampt real)''')
     conn.commit()
-    c.close()
 
 if __name__ == '__main__':
     main()
