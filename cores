@@ -25,6 +25,9 @@ def main():
     (opts, args) = config()
 
     #the repo we've been asked to parse
+    #@TODO: install bleeding-edge gitpython (instead of old debian version),
+    # maybe .clone will work, see:
+    # - https://github.com/davvid/GitPython/blob/00c5497f190172765cc7a53ff9d8852a26b91676/CHANGES#L63-67
     git.Git(opts.temp).clone(args[0])
 
 if __name__ == '__main__':
