@@ -1,1 +1,16 @@
-node_modules/*
+*.py[co]
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+sdist
+develop-eggs
+.installed.cfg
+
+# Installer logs
+pip-log.txt
+
