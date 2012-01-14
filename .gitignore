@@ -14,3 +14,5 @@ develop-eggs
 # Installer logs
 pip-log.txt
 
+# git repo that we parsing
+tmp/
