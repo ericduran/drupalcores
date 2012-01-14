@@ -18,12 +18,7 @@ def config():
 
     return parser.parse_args()
 
-def main():
-    (opts, args) = config()
-
-    #the repo we've been asked to parse
-    #git.Git(opts.temp).clone(args[0])
-
+def setDatabase(): 
     # Set up the sqlite3 db
     conn = sqlite3.connect('cores.db')
     c = conn.cursor()
@@ -33,6 +28,15 @@ def main():
     (hash test, timestampt real)''')
     conn.commit()
     c.close()
+
+def main():
+    (opts, args) = config()
+
+    #the repo we've been asked to parse
+    #git.Git(opts.temp).clone(args[0])
+
+    # Set up the sqlite3 db
+    setDatabase();
 
 
 if __name__ == '__main__':
