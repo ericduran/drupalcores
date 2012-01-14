@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import sqlite3
 from git import *
 from optparse import OptionParser
 
