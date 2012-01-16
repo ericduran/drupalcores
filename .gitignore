@@ -16,3 +16,5 @@ pip-log.txt
 
 # git repo that we parsing
 drupal/
+
+cores.db
