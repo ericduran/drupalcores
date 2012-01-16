@@ -2,9 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import os
 import settings
 import git
 import sqlite3
+from time import time
+import shlex, subprocess
 from optparse import OptionParser
 
 #optparse stuff
@@ -46,6 +49,7 @@ def main():
 
 
     # close the cursor
+    readLogs();
     c.close();
 
 def setDatabase():
@@ -53,13 +57,27 @@ def setDatabase():
     c.execute('''create table if not exists users
     (username text, count real)''')
     c.execute('''create table if not exists hash
-    (hash test, timestampt real)''')
+    (hash text, timestampt real)''')
     conn.commit()
 
 def lastHash(hash):
     #Add the last has to the sqlite database
-    c.execute('insert into hash values (?)', hash)
-    c.commit()
+    c.execute('insert into hash values (?, ?)',[ hash, time()])
+    conn.commit()
+
+def readLogs():
+    os.chdir('drupal')
+    logs = subprocess.Popen(settings.GIT_LOG, stdout=subprocess.PIPE, shell=True).stdout.read()
+    parseUsers(logs)
+
+def parseUsers(logs):
+    lines = logs.splitlines()
+    for item in lines:
+        item = item.strip().split(":")
+        sha = item[0]
+        users = item[1]
+        print users.split(",")
+        lastHash(sha)
 
 if __name__ == '__main__':
     main()
