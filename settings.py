@@ -1,6 +1,6 @@
 
 
-GIT_LOG = "git log --pretty=format:'%h : %s' -2000"
+GIT_LOG = "git log --pretty=format:'%h : %s' --after='2001-03-09'"
 
 
 
