@@ -52,6 +52,7 @@ def main():
 
     # close the cursor
     readLogs();
+    writeHTML();
     c.close();
 
 def setDatabase():
@@ -103,6 +104,11 @@ def getUserCount(username):
         return 0
 
     return values[0]
+
+def writeHTML():
+    c.execute("select * from users order by count desc")
+    results = c.fetchall()
+    print results
 
 if __name__ == '__main__':
     main()
