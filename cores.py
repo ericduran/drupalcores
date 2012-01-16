@@ -45,8 +45,10 @@ class DrupalCores():
         self.conn.commit()
 
     def readLogs(self):
-        os.chdir('drupal')
+        pushd = os.getcwd()
+        os.chdir(self.opts.temp)
         logs = subprocess.Popen(settings.GIT_LOG, stdout=subprocess.PIPE, shell=True).stdout.read()
+        os.chdir(pushd)
         self.parseUsers(logs)
 
     def parseUsers(self, logs):
