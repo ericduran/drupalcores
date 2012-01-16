@@ -6,6 +6,7 @@ import re
 import os
 import settings
 import git
+import HTML
 import sqlite3
 from time import time
 import shlex, subprocess
@@ -108,7 +109,10 @@ def getUserCount(username):
 def writeHTML():
     c.execute("select * from users order by count desc")
     results = c.fetchall()
-    print results
+    htmlcode = HTML.table(results)
+    f = open('table.html', 'w')
+    f.writelines(htmlcode)
+    f.close()
 
 if __name__ == '__main__':
     main()
