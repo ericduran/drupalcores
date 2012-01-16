@@ -15,4 +15,4 @@ develop-eggs
 pip-log.txt
 
 # git repo that we parsing
-tmp/
+drupal/
