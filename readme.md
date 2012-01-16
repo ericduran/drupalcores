@@ -20,3 +20,5 @@ Once you have a git repo of drupal core in the drupal directory then you can run
     ./cores.py
 
 
+View online:
+ [DrupalCores](http://ericduran.co/drupalcores/)
