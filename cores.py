@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import settings
 import git
 import sqlite3
 from optparse import OptionParser
@@ -46,7 +47,6 @@ def main():
 
     # close the cursor
     c.close();
-
 
 def setDatabase():
     # Set up the sqlite3 db
