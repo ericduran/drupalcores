@@ -22,3 +22,8 @@ Once you have a git repo of drupal core in the drupal directory then you can run
 
 View online:
  [DrupalCores](http://ericduran.co/drupalcores/)
+ 
+
+##Help:
+
+If you want to help please just fork the project and issue a pull request. Be warned this is my 1st time writing python so I'm sure it's horrible!!!!
