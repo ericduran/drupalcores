@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import re
 import os
 import settings
 import git
@@ -35,6 +36,7 @@ def main():
 
     #sqlite db
     conn = sqlite3.connect('cores.db')
+    conn.text_factory = str
     c = conn.cursor()
 
     # Set up the sqlite3 db
@@ -76,8 +78,31 @@ def parseUsers(logs):
         item = item.strip().split(":")
         sha = item[0]
         users = item[1]
-        print users.split(",")
-        lastHash(sha)
+        if users.startswith(" Issue"):
+            commit_message = users.strip()
+            commit_message = re.sub('Issue #[0-9]* by ', '', commit_message)
+            commit_users = commit_message.split(",")
+            for user in commit_users:
+                insertUser(user.strip(), sha)
+                #lastHash(sha)
+
+def insertUser(username, hash):
+    count = getUserCount(username)
+    count = count + 1
+    if count == 1:
+        c.execute('insert into users values (?, ?)',[username, count])
+    else:
+        c.execute('update users set count = ? where username = ?', [count, username])
+
+    conn.commit()
+
+def getUserCount(username):
+    c.execute("select count from users where username = ?", [username])
+    values = c.fetchone()
+    if not values:
+        return 0
+
+    return values[0]
 
 if __name__ == '__main__':
     main()
