@@ -273,7 +273,7 @@ class Table (object):
         if self.cellpadding:  self.attribs['cellpadding'] = self.cellpadding
         for attr in self.attribs:
             attribs_str += ' %s="%s"' % (attr, self.attribs[attr])
-        result = '<TABLE%s>\n' % attribs_str
+        result = '<table%s>\n' % attribs_str
         # insert column tags and attributes if specified:
         if self.col_width:
             for width in self.col_width:
@@ -326,7 +326,7 @@ class Table (object):
             if self.col_styles and not row.col_styles:
                 row.col_styles = self.col_styles
             result += str(row)
-        result += '</TABLE>'
+        result += '</table>'
         return result
 
 
