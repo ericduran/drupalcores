@@ -94,7 +94,7 @@ def config():
     parser = OptionParser(usage='%prog [options] URL', description='Parse '
             'gitrepository at URL and generate commit-statistics to reward'
             'your users')
-    parser.add_option('-d', '--database', dest='db', default='cores.db',
+    parser.add_option('-d', '--database', dest='db', default=':memory:',
         help="Database to use in counting user's commits.")
     parser.add_option('-b', '--branch', dest='branch', default='master',
         help="Branch you'd like to parse when checking out URL.")
