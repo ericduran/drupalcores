@@ -8,6 +8,7 @@ import settings
 import git
 import HTML
 import sqlite3
+import datetime
 from time import time
 import shlex, subprocess
 from optparse import OptionParser
@@ -119,7 +120,10 @@ def main():
     dcores.c.close()
 
 def writeHTML(userCounts, tableName):
-    htmlcode = "---\nlayout: default\n---\n\n\n"
+    htmlcode = "---\n"
+    htmlcode += "layout: default\n"
+    htmlcode += "date: " + str(datetime.datetime.now()) + "\n"
+    htmlcode += "---\n\n\n"
     htmlcode += HTML.table(userCounts)
     f = open(tableName, 'w')
     f.writelines(htmlcode)
