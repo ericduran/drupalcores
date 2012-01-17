@@ -100,7 +100,7 @@ def config():
         help="Branch you'd like to parse when checking out URL.")
     parser.add_option('-t', '--temp', dest='temp', default='drupal',
         help="Temporary directory you'd like to make a mess in.")
-    parser.add_option('-o', '--output', dest='htmltable', default='table.html',
+    parser.add_option('-o', '--output', dest='htmltable', default='pages/index.html',
         help="Filename that the HTML output should be written to.")
 
     return parser.parse_args()
@@ -119,7 +119,8 @@ def main():
     dcores.c.close()
 
 def writeHTML(userCounts, tableName):
-    htmlcode = HTML.table(userCounts)
+    htmlcode = "---\nlayout: default\n---\n\n\n"
+    htmlcode += HTML.table(userCounts)
     f = open(tableName, 'w')
     f.writelines(htmlcode)
     f.close()
