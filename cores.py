@@ -60,11 +60,17 @@ class DrupalCores():
             users = item[1]
             if users.startswith(" Issue"):
                 commit_message = users.strip()
-                commit_message = re.sub('Issue #[0-9]* by ', '', commit_message)
+                commit_message = re.sub('Issue #[0-9]* (follow-up by|by) ', '', commit_message)
                 commit_users = commit_message.split(",")
                 for user in commit_users:
                     self.insertUser(user.strip(), sha)
-                    #self.lastHash(sha)
+            
+            if users.startswith("- Patch"):
+                commit_message = users.strip()
+                commit_message = re.sub('- Patch #[0-9]* (follow-up by|by) ', '', commit_message)
+                commit_users = commit_message.split(",")
+                for user in commit_users:
+                    self.insertUser(user.strip(), sha)
 
     def insertUser(self, username, hash):
         count = self.getUserCount(username)
