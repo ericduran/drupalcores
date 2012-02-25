@@ -94,7 +94,6 @@ class DrupalCores():
         pushd = os.getcwd()
         os.chdir(self.opts.temp)
         commitcount = subprocess.Popen(settings.GIT_COMMIT_COUNT, stdout=subprocess.PIPE, shell=True).stdout.read()
-        print commitcount;
         os.chdir(pushd)
         self.c.execute("select *, (count*100 / ?) from users order by count desc", [commitcount])
         return self.c.fetchall()
