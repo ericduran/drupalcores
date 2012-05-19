@@ -5,7 +5,6 @@ import sys
 import re
 import os
 import settings
-# import git
 import HTML
 import sqlite3
 import datetime
@@ -23,10 +22,6 @@ class DrupalCores():
 
         # Set up the sqlite3 db
         self.setDatabase()
-
-        #the repo we've been asked to parse
-        # @TODO: shell out to clone a repo into self.opts.temp dir/
-        #git.Git(dcores.opts.temp).clone(dcores.args[0])
 
     def setDatabase(self):
         """Set up the sqlite3 db"""
@@ -132,7 +127,7 @@ def writeHTML(userCounts, tableName):
     htmlcode += "layout: default\n"
     htmlcode += "date: " + str(datetime.datetime.now()) + "\n"
     htmlcode += "---\n\n\n"
-    htmlcode += HTML.table(userCounts)
+    htmlcode += HTML.table(userCounts).replace('TR', 'tr').replace('TD', 'td')    
     f = open(tableName, 'w')
     f.writelines(htmlcode)
     f.close()
