@@ -48,23 +48,23 @@ class DrupalCores():
         self.parseUsers(logs)
 
     def parseUsers(self, logs):
+        # get the logs into lines
         lines = logs.splitlines()
-        for item in lines:
-            item = item.strip().split(":")
-            sha = item[0]
-            users = item[1]
-            users.strip()
-            if users.startswith(" Issue"):
-                commit_message = re.sub('Issue #[0-9]* (follow-up by|by) ', '', users)
-                commit_users = re.split(",|\|", commit_message)
-                for user in commit_users:
-                    self.insertUser(user.strip(), sha)
-            elif users.startswith(" - Patch"):
-                commit_message = re.sub(' - Patch #[0-9]* (follow-up by|by) ', '', users)
-                commit_users = re.split(",|\|", commit_message)
-                for user in commit_users:
-                    self.insertUser(user.strip(), sha)
-
+        # iterate over them
+        for line in lines:
+            #start breaking down the lines
+            items = line.strip().split(':')
+            #save the sha for later
+            sha = items[0].strip()
+            #get the users by spliting on by
+            users = items[1].strip().split("by")
+            #if we have valid data let's insert them
+            if len(users) > 1:
+                #split the users string into commiters
+                commiters = users[1].strip().split(',')
+                for commiter in commiters:
+                     self.insertUser(commiter.strip(), sha)   
+          
     def insertUser(self, username, hash):
         count = self.getUserCount(username)
         count = count + 1
