@@ -17,7 +17,7 @@ Once you have a git repo of drupal core in the drupal directory then you can run
 
 
 View online:
- [DrupalCores](http://ericduran.co/drupalcores/)
+ [DrupalCores](http://ericduran.github.com/drupalcores/)
 
 
 ##Help:
