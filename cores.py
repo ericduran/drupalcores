@@ -5,7 +5,7 @@ import sys
 import re
 import os
 import settings
-import git
+# import git
 import HTML
 import sqlite3
 import datetime
