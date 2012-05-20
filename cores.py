@@ -15,8 +15,8 @@ from optparse import OptionParser
 
 class DrupalCores():
     def __init__(self, opts, args):
-        """Initial setup and config of database
-        """
+        #Initial setup and config of database
+        
         self.opts = opts
         self.args = args
 
@@ -24,7 +24,7 @@ class DrupalCores():
         self.setDatabase()
 
     def setDatabase(self):
-        """Set up the sqlite3 db"""
+        #Set up the sqlite3 db
         self.conn = sqlite3.connect(self.opts.db)
         self.conn.text_factory = str
         self.c = self.conn.cursor()
@@ -36,7 +36,7 @@ class DrupalCores():
         self.conn.commit()
 
     def lastHash(self, hash):
-        """Add the last has to the sqlite database"""
+        #Add the last has to the sqlite database
         self.c.execute('insert into hash values (?, ?)', [hash, time()])
         self.conn.commit()
 
@@ -89,12 +89,12 @@ class DrupalCores():
         commitcount = subprocess.Popen(settings.GIT_COMMIT_COUNT, stdout=subprocess.PIPE, shell=True).stdout.read()
         os.chdir(pushd)
         self.c.execute("select *, (count*100 / ?) from users order by count desc", [commitcount])
+        help(self.c)
         return self.c.fetchall()
 
 #optparse stuff
 def config():
-    """Definition for acceptable options with python's optparse library.
-    """
+    #Definition for acceptable options with python's optparse library.
     parser = OptionParser(usage='%prog [options] URL', description='Parse '
             'gitrepository at URL and generate commit-statistics to reward'
             'your users')
@@ -123,10 +123,12 @@ def main():
     dcores.c.close()
 
 def writeHTML(userCounts, tableName):
+    #print userCounts
     htmlcode = "---\n"
     htmlcode += "layout: default\n"
     htmlcode += "date: " + str(datetime.datetime.now()) + "\n"
     htmlcode += "---\n\n\n"
+    print dir(HTML.table(userCounts))
     htmlcode += HTML.table(userCounts).replace('TR', 'tr').replace('TD', 'td')    
     f = open(tableName, 'w')
     f.writelines(htmlcode)
