@@ -15,8 +15,8 @@ from optparse import OptionParser
 
 class DrupalCores():
     def __init__(self, opts, args):
-        """Initial setup and config of database
-        """
+        #Initial setup and config of database
+        
         self.opts = opts
         self.args = args
 
@@ -24,7 +24,7 @@ class DrupalCores():
         self.setDatabase()
 
     def setDatabase(self):
-        """Set up the sqlite3 db"""
+        #Set up the sqlite3 db
         self.conn = sqlite3.connect(self.opts.db)
         self.conn.text_factory = str
         self.c = self.conn.cursor()
@@ -36,7 +36,7 @@ class DrupalCores():
         self.conn.commit()
 
     def lastHash(self, hash):
-        """Add the last has to the sqlite database"""
+        #Add the last has to the sqlite database
         self.c.execute('insert into hash values (?, ?)', [hash, time()])
         self.conn.commit()
 
@@ -61,10 +61,16 @@ class DrupalCores():
             #if we have valid data let's insert them
             if len(users) > 1:
                 #split the users string into commiters
-                commiters = users[1].strip().split(',')
-                for commiter in commiters:
-                     self.insertUser(commiter.strip(), sha)   
-          
+                committers = users[1].strip().split(',')
+                for committer in committers:
+                    #check for if there is also alternate delimeter '|'
+                   if committer.strip().find('|') >= 0:
+                        morecommitters = committer.split('|')
+                        for morecommitter in morecommitters:
+                            self.insertUser(morecommitter.strip(), sha)
+                   else:
+                        self.insertUser(committer.strip(), sha)
+                                 
     def insertUser(self, username, hash):
         count = self.getUserCount(username)
         count = count + 1
@@ -93,8 +99,7 @@ class DrupalCores():
 
 #optparse stuff
 def config():
-    """Definition for acceptable options with python's optparse library.
-    """
+    #Definition for acceptable options with python's optparse library.
     parser = OptionParser(usage='%prog [options] URL', description='Parse '
             'gitrepository at URL and generate commit-statistics to reward'
             'your users')
@@ -123,6 +128,7 @@ def main():
     dcores.c.close()
 
 def writeHTML(userCounts, tableName):
+    #print userCounts
     htmlcode = "---\n"
     htmlcode += "layout: default\n"
     htmlcode += "date: " + str(datetime.datetime.now()) + "\n"
