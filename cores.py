@@ -64,12 +64,12 @@ class DrupalCores():
                 committers = users[1].strip().split(',')
                 for committer in committers:
                     #check for if there is also alternate delimeter '|'
-                     if committer.strip().find('|') >= 0:
+                   if committer.strip().find('|') >= 0:
                         morecommitters = committer.split('|')
                         for morecommitter in morecommitters:
                             self.insertUser(morecommitter.strip(), sha)
-                    else:
-                        self.insertUser(committer.strip(), sha) ]
+                   else:
+                        self.insertUser(committer.strip(), sha)
                                  
     def insertUser(self, username, hash):
         count = self.getUserCount(username)
