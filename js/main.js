@@ -1,7 +1,7 @@
 /**
  * Eric J. Duran
  *
- * Simple table username filter for our table.
+ * Simple username filter for our table.
  */
 $(document).ready(function() {
   var $filter = $("#filter");
