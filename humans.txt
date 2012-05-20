@@ -1,0 +1,12 @@
+/* TEAM */
+	Developer:Eric J. Duran
+	Twitter: @ericjduran
+
+	Developer:Robbie Holmes
+	Twitter: @robbiethegeek
+
+/* SITE */
+	Last update:2012/02/04
+	Language:English
+	Doctype:HTML5
+  Components: Modernizr, jQuery.
