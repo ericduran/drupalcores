@@ -14,15 +14,15 @@
           <a id="forkme_banner" href="https://github.com/ericduran/drupalcores">View on GitHub</a>
           <h1 id="project_title">DrupalCores</h1>
           <h2 id="project_tagline">A very basic table of all contributer to Drupal 8 Core</h2>
-            <section id="downloads">
-              <a class="zip_download_link" href="#">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="#">Download this project as a tar.gz file</a>
-            </section>
         </header>
     </div>
 
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
+        <div class="table-filter">
+          <label for="filter">Filter: </label>
+          <input id="filter" type="text" size="32" placeholder="drupal.org username" />
+        </div>
         {{ content }}
       </section>
     </div>
