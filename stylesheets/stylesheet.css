@@ -367,7 +367,7 @@ Full-Width Styles
 }
 
 #main_content {
-  padding-top: 40px;
+  padding-top: 20px;
 }
 
 #footer_wrap {
@@ -428,4 +428,11 @@ Small Device Styles
     font-size: 11px;
   }
 
+}
+
+/*********
+Custom Changes
+************/
+.table-filter {
+  padding-bottom: 15px;
 }
