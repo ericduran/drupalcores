@@ -61,9 +61,15 @@ class DrupalCores():
             #if we have valid data let's insert them
             if len(users) > 1:
                 #split the users string into commiters
-                commiters = users[1].strip().split(',')
-                for commiter in commiters:
-                     self.insertUser(commiter.strip(), sha)   
+                committers = users[1].strip().split(',')
+                for committer in committers:
+                    #check for if there is also alternate delimeter '|'
+                     if committer.strip().find('|') >= 0:
+                        morecommitters = committer.split('|')
+                        for morecommitter in morecommitters:
+                            self.insertUser(morecommitter.strip(), sha)
+                    else:
+                        self.insertUser(committer.strip(), sha)   
           
     def insertUser(self, username, hash):
         count = self.getUserCount(username)
@@ -89,7 +95,6 @@ class DrupalCores():
         commitcount = subprocess.Popen(settings.GIT_COMMIT_COUNT, stdout=subprocess.PIPE, shell=True).stdout.read()
         os.chdir(pushd)
         self.c.execute("select *, (count*100 / ?) from users order by count desc", [commitcount])
-        help(self.c)
         return self.c.fetchall()
 
 #optparse stuff
@@ -128,7 +133,6 @@ def writeHTML(userCounts, tableName):
     htmlcode += "layout: default\n"
     htmlcode += "date: " + str(datetime.datetime.now()) + "\n"
     htmlcode += "---\n\n\n"
-    print dir(HTML.table(userCounts))
     htmlcode += HTML.table(userCounts).replace('TR', 'tr').replace('TD', 'td')    
     f = open(tableName, 'w')
     f.writelines(htmlcode)
