@@ -69,8 +69,8 @@ class DrupalCores():
                         for morecommitter in morecommitters:
                             self.insertUser(morecommitter.strip(), sha)
                     else:
-                        self.insertUser(committer.strip(), sha)   
-          
+                        self.insertUser(committer.strip(), sha) ]
+                                 
     def insertUser(self, username, hash):
         count = self.getUserCount(username)
         count = count + 1
