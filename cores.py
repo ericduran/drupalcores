@@ -57,7 +57,8 @@ class DrupalCores():
             #save the sha for later
             sha = items[0].strip()
             #get the users by spliting on by
-            users = items[1].strip().split("by")
+            users = re.sub(r'et al.*$', '', items[1].strip()).strip().rstrip(',')
+            users = users.split("by")
             #if we have valid data let's insert them
             if len(users) > 1:
                 #split the users string into commiters
