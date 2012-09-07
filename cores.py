@@ -16,7 +16,7 @@ from optparse import OptionParser
 class DrupalCores():
     def __init__(self, opts, args):
         #Initial setup and config of database
-        
+
         self.opts = opts
         self.args = args
 
@@ -71,7 +71,7 @@ class DrupalCores():
                             self.insertUser(morecommitter.strip(), sha)
                    else:
                         self.insertUser(committer.strip(), sha)
-                                 
+
     def insertUser(self, username, hash):
         count = self.getUserCount(username)
         count = count + 1
@@ -134,7 +134,7 @@ def writeHTML(userCounts, tableName):
     htmlcode += "layout: default\n"
     htmlcode += "date: " + str(datetime.datetime.now()) + "\n"
     htmlcode += "---\n\n\n"
-    htmlcode += HTML.table(userCounts).replace('TR', 'tr').replace('TD', 'td')    
+    htmlcode += HTML.table(userCounts, header_row = ['Drupal.org Username', 'Mentions','Percent'], col_width = ['70%', '15%', '15%']).replace('COL', 'col').replace('TH', 'th').replace('TR', 'tr').replace('TD', 'td')
     f = open(tableName, 'w')
     f.writelines(htmlcode)
     f.close()
