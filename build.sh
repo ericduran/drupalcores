@@ -18,3 +18,6 @@ else
   cd ..
 fi
 
+./cores.py
+cd pages
+git commit -am "Update bump."
