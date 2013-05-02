@@ -18,7 +18,7 @@ else
   cd ..
 fi
 
-./cores.py
+./cores.rb > pages/index.html
 cd pages
 git commit -am "Update bump."
 git push
