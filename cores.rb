@@ -39,6 +39,7 @@ __END__
 
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
+        <div id="chart_div" style="width: 900px; height: 500px;"></div>
         <div class="table-filter">
           Total: <%= contributors.length %> contributors
         </div>
@@ -71,5 +72,30 @@ __END__
         <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
+
+
+<script src="https://www.google.com/jsapi"></script>
+<script>
+  var chartData = [
+   ['Task', 'Drupal core charts'],
+   ['1 commit',<%= contributors.select {|k,v| v < 2}.length %>],
+   ['2 - 10 commits',<%= contributors.select {|k,v| (v > 1 && v < 11) }.length %>],
+   ['Over 10 commits',<%= contributors.select {|k,v| v > 10}.length %>]
+  ];
+  google.load("visualization", "1", {packages:["corechart"]});
+  google.setOnLoadCallback(drawChart);
+  function drawChart() {
+    var data = google.visualization.arrayToDataTable(chartData);
+
+    var options = {
+      title: 'Drupal Cores Contributors Chart',
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }
+
+</script>
+
   </body>
 </html>

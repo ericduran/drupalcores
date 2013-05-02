@@ -20,5 +20,5 @@ fi
 
 ./cores.rb > ./pages/index.html
 cd pages
-git commit -am "Update bump."
-git push
+#git commit -am "Update bump."
+#git push
