@@ -3,7 +3,7 @@ require 'erb'
 require 'yaml'
 
 contributors = Hash.new(0)
-%x[git log 8.x --since=2011-03-09 -s --format=%s].split("\n").each do |m|
+%x[git --git-dir=drupal/.git --work-tree=drupal log 8.x --since=2011-03-09 -s --format=%s].split("\n").each do |m|
   m.scan(/\s(?:by\s?)([\w\s,.|]+):/i).each do |people|
     people[0].split(/[,|]/).each do |p|
       p.strip!
