@@ -6,8 +6,7 @@ contributors = Hash.new(0)
 %x[git --git-dir=drupal/.git --work-tree=drupal log 8.x --since=2011-03-09 -s --format=%s].split("\n").each do |m|
   m.scan(/\s(?:by\s?)([\w\s,.|]+):/i).each do |people|
     people[0].split(/[,|]/).each do |p|
-      p.strip!
-      contributors[p] += 1 unless p.nil?
+      contributors[p.strip.downcase] += 1 unless p.nil?
     end
   end
 end
