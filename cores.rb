@@ -23,7 +23,7 @@ __END__
 <head>
   <meta charset="utf-8">
   <title>DrupalCores</title>
-  <meta name="description" content="A simple list of all contributes to Drupal 8 core">
+  <meta name="description" content="A simple list of all contributors to Drupal 8 core">
   <meta name="author" content="Eric J. Duran">
   <link type="text/plain" rel="author" href="http://ericduran.github.com/drupalcores/humans.txt" />
   <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
