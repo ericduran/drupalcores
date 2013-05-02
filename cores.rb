@@ -33,15 +33,13 @@ __END__
         <header class="inner">
           <a id="forkme_banner" href="https://github.com/ericduran/drupalcores">View on GitHub</a>
           <h1 id="project_title">DrupalCores</h1>
-          <h2 id="project_tagline">A very basic table of all contributer to Drupal 8 Core</h2>
+          <h2 id="project_tagline">A very basic table of all contributors to Drupal 8 Core</h2>
         </header>
     </div>
 
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <div class="table-filter">
-          <label for="filter">Filter: </label>
-          <input disabled id="filter" type="text" size="32" placeholder="Fix me" />
           Total: <%= contributors.length %> contributors
         </div>
 
@@ -68,7 +66,7 @@ __END__
 
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="updated">Last updated 2013-05-01 19:09:12.499424</p>
+        <p class="updated">Last updated <%= Time.new %></p>
         <p class="copyright">DrupalCores maintained by <a href="https://github.com/ericduran">"ericduran" <3 ruby, lol</a></p>
         <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
