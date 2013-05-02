@@ -26,7 +26,6 @@ __END__
   <meta name="author" content="Eric J. Duran">
   <link type="text/plain" rel="author" href="http://ericduran.github.com/drupalcores/humans.txt" />
   <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-  <script src="js/libs/modernizr.min.js"></script>
 </head>
 <body>
     <div id="header_wrap" class="outer">
@@ -71,9 +70,5 @@ __END__
         <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
-    <script src="js/main.js"></script>
   </body>
 </html>
