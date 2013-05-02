@@ -42,7 +42,9 @@ __END__
         <div class="table-filter">
           <label for="filter">Filter: </label>
           <input disabled id="filter" type="text" size="32" placeholder="Fix me" />
+          Total: <%= contributors.length %> contributors
         </div>
+
         <table cellpadding="4" style="border: 1px solid #000000; border-collapse: collapse;" border="1">
   <col width="70%">
   <col width="15%">
