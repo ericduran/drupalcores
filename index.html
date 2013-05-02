@@ -19,6 +19,7 @@
 
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
+        <div id="chart_div" style="width: 900px; height: 500px;"></div>
         <div class="table-filter">
           Total: 1202 contributors
         </div>
@@ -6049,10 +6050,35 @@
 
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="updated">Last updated 2013-05-02 17:35:54 -0400</p>
+        <p class="updated">Last updated 2013-05-02 17:57:33 -0400</p>
         <p class="copyright">DrupalCores maintained by <a href="https://github.com/ericduran">"ericduran" <3 ruby, lol</a></p>
         <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
+
+
+<script src="https://www.google.com/jsapi"></script>
+<script>
+  var chartData = [
+   ['Task', 'Drupal core charts'],
+   ['1 commit',594],
+   ['2 - 10 commits',475],
+   ['Over 10 commits',133]
+  ];
+  google.load("visualization", "1", {packages:["corechart"]});
+  google.setOnLoadCallback(drawChart);
+  function drawChart() {
+    var data = google.visualization.arrayToDataTable(chartData);
+
+    var options = {
+      title: 'Drupal Cores Contributors Chart',
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }
+
+</script>
+
   </body>
 </html>
