@@ -41,7 +41,7 @@ __END__
 
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <div id="chart_div" style="width: 900px; height: 500px;"></div>
+        <div id="chart_div" style="width: 640px; height: 400px;"></div>
         <div class="table-filter">
           Total: <%= contributors.length %> contributors
         </div>
