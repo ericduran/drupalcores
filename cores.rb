@@ -24,6 +24,8 @@ __END__
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
   <title>DrupalCores</title>
   <meta name="description" content="A simple list of all contributors to Drupal 8 core">
   <meta name="author" content="Eric J. Duran">
