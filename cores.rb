@@ -91,6 +91,7 @@ __END__
 
     var options = {
       title: 'Drupal Cores Contributors Chart',
+      backgroundColor: '#f2f2f2'
     };
 
     var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
