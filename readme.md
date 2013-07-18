@@ -19,6 +19,8 @@ Once you have a git repo of drupal core in the drupal directory then you can run
 View online:
  [DrupalCores](http://ericduran.github.com/drupalcores/)
 
+Do you only want the data?
+ [BAM!!!](http://ericduran.github.io/drupalcores/data.json)
 
 ##Help:
 
