@@ -6,6 +6,7 @@ require 'yaml'
 
 name_mappings = YAML::load_file('./name_mappings.yml')
 contributors = Hash.new(0)
+i = 0
 %x[git --git-dir=drupal/.git --work-tree=drupal log 8.x --since=2011-03-09 -s --format=%s].split("\n").each do |m|
   m.gsub(/\-/, '_').scan(/\s(?:by\s?)([[:word:]\s,.|]+):/i).each do |people|
     people[0].split(/[,|]/).each do |p|
@@ -49,16 +50,19 @@ __END__
         </div>
 
         <table cellpadding="4" style="border: 1px solid #000000; border-collapse: collapse;" border="1">
-  <col width="70%">
+  <col width="5%">
+  <col width="65%">
   <col width="15%">
   <col width="15%">
  <tr>
+ <th>#</th>
   <th>Drupal.org Username</th>
   <th>Mentions</th>
   <th>Percent</th>
  </tr>
  <% contributors.each do |name, mentions| %>
  <tr>
+  <td id="<%= name %>"><%= i+=1 %></td>
   <td><%= name %></td>
   <td><%= mentions %></td>
   <td><%= ((mentions/sum)*100).round(4) %>%</td>
