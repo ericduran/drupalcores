@@ -46,20 +46,25 @@ __END__
       <section id="main_content" class="inner">
         <div id="chart_div" style="width: 640px; height: 400px;"></div>
         <div class="table-filter">
-          Total: <%= contributors.length %> contributors
+          <span>Total: <%= contributors.length %> contributors</span>
+          <label for="datatable-filter">Searchy:</label>
+          <input name="datatable-filter" id="datatable-filter" />
         </div>
 
-        <table cellpadding="4" style="border: 1px solid #000000; border-collapse: collapse;" border="1">
+        <table id="commit-table" cellpadding="4" style="border: 1px solid #000000; border-collapse: collapse;" border="1">
   <col width="5%">
   <col width="65%">
   <col width="15%">
   <col width="15%">
- <tr>
- <th>#</th>
-  <th>Drupal.org Username</th>
-  <th>Mentions</th>
-  <th>Percent</th>
- </tr>
+  <thead>
+   <tr>
+    <th>#</th>
+    <th>Drupal.org Username</th>
+    <th>Mentions</th>
+    <th>Percent</th>
+   </tr>
+ </thead>
+ <tbody>
  <% contributors.each do |name, mentions| %>
  <tr>
   <td id="<%= name %>"><%= i+=1 %></td>
@@ -68,7 +73,7 @@ __END__
   <td><%= ((mentions/sum)*100).round(4) %>%</td>
  </tr>
  <% end %>
-
+ </tbody>
 </table>
       </section>
     </div>
@@ -106,5 +111,22 @@ __END__
 
 </script>
 
+<script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#commit-table').dataTable({
+        bPaginate: false,
+        // Manually attach to an input field, so we can control its position.
+        sDom: 'lrtip',
+        fnInitComplete: function () {
+            var that = this;
+            $('#datatable-filter').on('keydown', function () {
+                that.fnFilter($(this).val());
+            });
+        }
+    });
+  });
+</script>
   </body>
 </html>
