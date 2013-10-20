@@ -9,7 +9,7 @@ contributors = Hash.new(0)
 i = 0
 %x[git --git-dir=drupal/.git --work-tree=drupal log 8.x --since=2011-03-09 -s --format=%s].split("\n").each do |m|
   m.gsub(/\-/, '_').scan(/\s(?:by\s?)([[:word:]\s,.|]+):/i).each do |people|
-    people[0].split(/(?:,|\||\band\b)/).each do |p|
+    people[0].split(/(?:,|\||\band\b|\bet al(.)?\b)/).each do |p|
       name = p.strip.downcase
       contributors[name_mappings[name] || name] += 1 unless p.nil?
     end
