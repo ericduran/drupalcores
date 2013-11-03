@@ -6,8 +6,9 @@ require 'yaml'
 
 name_mappings = YAML::load_file('./name_mappings.yml')
 contributors = Hash.new(0)
-i = 0
-lastName = '';
+i = 1;
+lastOrder = -1;
+lastMentions = 0;
 %x[git --git-dir=drupal/.git --work-tree=drupal log 8.x --since=2011-03-09 -s --format=%s].split("\n").each do |m|
   m.gsub(/\-/, '_').scan(/\s(?:by\s?)([[:word:]\s,.|]+):/i).each do |people|
     people[0].split(/[,|]/).each do |p|
@@ -63,11 +64,15 @@ __END__
  </tr>
  <% contributors.each do |name, mentions| %>
  <tr>
-  <td id="<%= name %>"><%= (contributors[lastName] == contributors[name]) ? i : i+=1 %></td>
+  <td id="<%= name %>"><%= (lastMentions == mentions) ? lastOrder : i %></td>
   <td><%= name %></td>
   <td><%= mentions %></td>
   <td><%= ((mentions/sum)*100).round(4) %>%</td>
-  <% lastName = name %></tr>
+  <% if lastMentions != mentions %>
+    <% lastOrder = i %>
+  <% end %>
+  <% i += 1 %>
+  <% lastMentions = mentions %></tr>
  <% end %>
 
 </table>
