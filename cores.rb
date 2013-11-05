@@ -11,7 +11,7 @@ lastOrder = -1;
 lastMentions = 0;
 %x[git --git-dir=drupal/.git --work-tree=drupal log 8.x --since=2011-03-09 -s --format=%s].split("\n").each do |m|
   m.gsub(/\-/, '_').scan(/\s(?:by\s?)([[:word:]\s,.|]+):/i).each do |people|
-    people[0].split(/[,|]/).each do |p|
+    people[0].gsub(/\sand\s/i, ', ').split(/[,|]/).each do |p|
       name = p.strip.downcase
       contributors[name_mappings[name] || name] += 1 unless p.nil?
     end
