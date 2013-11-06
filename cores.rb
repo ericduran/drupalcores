@@ -65,7 +65,7 @@ __END__
  <% contributors.each do |name, mentions| %>
  <tr>
   <td id="<%= name %>"><%= (lastMentions == mentions) ? lastOrder : i %></td>
-  <td><%= name %></td>
+  <td><a href="http://dgo.to/@<%= name %>"><%= name %></a></td>
   <td><%= mentions %></td>
   <td><%= ((mentions/sum)*100).round(4) %>%</td>
   <% if lastMentions != mentions %>
