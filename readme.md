@@ -15,6 +15,11 @@ Once you have a git repo of drupal core in the drupal directory then you can run
 
     ./cores.rb
 
+For the company list do:
+
+    gem install nokogiri
+    ./companies.rb
+    Takes a long time...
 
 View online:
  [DrupalCores](http://ericduran.github.com/drupalcores/)
