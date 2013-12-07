@@ -6,7 +6,12 @@ require 'yaml'
 require 'nokogiri'
 require 'open_uri_redirections'
 
+COMPANY_NOT_FOUND='not_found'
+COMPANY_NOT_DEFINED='not_defined'
+
 name_mappings = YAML::load_file('./name_mappings.yml')
+$companies_info = YAML::load_file('./company_infos.yml') || Hash.new(0)
+company_mapping = YAML::load_file('./company_mapping.yml') || Hash.new(0)
 contributors = Hash.new(0)
 i = 1;
 lastOrder = -1;
@@ -21,8 +26,29 @@ lastMentions = 0;
 end
 
 companies = Hash.new(0)
+
+def ensure_company(companies, key, title, link)
+  unless companies.key? key
+    companies[key] = Hash.new(0)
+    companies[key]['contributors'] = Hash.new(0)
+    if $companies_info.key? key
+      companies[key]['title'] = $companies_info[key]['title']
+      companies[key]['link'] = $companies_info[key]['link']
+    else
+      companies[key]['title'] = title
+      companies[key]['link'] = link
+    end
+  end
+end
+
 count = 0
-contributors.each do |name,mentions|
+contributors.sort_by {|k, v| v }.reverse.each do |name,mentions|
+  if company_mapping.key? name
+    ensure_company(companies, company_mapping[name], 'should be filled via company infos', 'should be filled via company infos')
+    companies[company_mapping[name]]['mentions'] += mentions
+    companies[company_mapping[name]]['contributors'][name] = mentions
+    next
+  end
   url = "http://dgo.to/@#{name}"
   url = URI::encode(url)
 #  puts "#{name} has #{commits} commits with #{url} (#{i}/#{contributors.length})"
@@ -32,17 +58,13 @@ contributors.each do |name,mentions|
   doc.css('title').each do |title|
     if title.text == 'Users | Drupal.org'
       found = false
-      unless companies.key? 'not_found'
-        companies['not_found'] = Hash.new(0)
-        companies['not_found']['title'] = 'Users not found'
-        companies['not_found']['link'] = 'Users not found'
-        companies['not_found']['contributors'] = Hash.new(0)
-      end
-      companies['not_found']['mentions'] += mentions
-      companies['not_found']['contributors'][name] = mentions
+      ensure_company(companies, COMPANY_NOT_FOUND, 'Users not found', 'Users not found')
+      companies[COMPANY_NOT_FOUND]['mentions'] += mentions
+      companies[COMPANY_NOT_FOUND]['contributors'][name] = mentions
     end
   end
   if found
+    found = false
     doc.css('dt').each do |dt|
       if dt.content == 'Current company or organization'
         link = dt.next_element.child
@@ -52,28 +74,41 @@ contributors.each do |name,mentions|
           company = link.child.text
         end
         company = company.strip
-        unless companies.key? company
-          link['href'] = 'https://drupal.org' + link['href']
-          companies[company] = Hash.new(0)
-          companies[company]['title'] = company
-          companies[company]['link'] = link.to_s
-          companies[company]['contributors'] = Hash.new(0)
-        end
-        companies[company]['mentions'] += mentions
-        companies[company]['contributors'][name] = mentions
+        company_key = company.downcase
+        link['href'] = 'https://drupal.org' + link['href']
+        ensure_company(companies, company_key, company, link.to_s)
+        companies[company_key]['mentions'] += mentions
+        companies[company_key]['contributors'][name] = mentions
+        found = true
       end
+    end
+    unless found
+      ensure_company(companies, COMPANY_NOT_DEFINED, 'Not specified', 'Not specified')
+      companies[COMPANY_NOT_DEFINED]['mentions'] += mentions
+      companies[COMPANY_NOT_DEFINED]['contributors'][name] = mentions
     end
   end
   count += 1
-#  if count > 5
-#    break
-#  end
+  if count > 5
+    break
+  end
 end
 
 companies = companies.sort_by {|k, v| v['mentions'] }.reverse
+companies.each do |k, values|
+  unless $companies_info.key? k
+    $companies_info[k] = Hash.new(0)
+    $companies_info[k]['title'] = values['title']
+    $companies_info[k]['link'] = values['link']
+  end
+  values['contributors'].each do |name, mentions|
+    company_mapping[name] = k
+  end
+end
+File.open('./company_infos.yml', 'w') { |f| YAML.dump($companies_info, f) }
+File.open('./company_mapping.yml', 'w') { |f| YAML.dump(company_mapping, f) }
 
 sum = contributors.values.reduce(:+).to_f
-contributors = Hash[contributors.sort_by {|k, v| v }.reverse]
 puts ERB.new(DATA.readlines.join, 0, '>').result
 
 __END__
@@ -94,7 +129,7 @@ __END__
         <header class="inner">
           <a id="forkme_banner" href="https://github.com/ericduran/drupalcores">View on GitHub</a>
           <h1 id="project_title">DrupalCores</h1>
-          <h2 id="project_tagline">A very basic table of all contributors to Drupal 8 Core</h2>
+          <h2 id="project_tagline">A very basic table of all companies with contributors to Drupal 8 Core</h2>
         </header>
     </div>
 
@@ -102,7 +137,7 @@ __END__
       <section id="main_content" class="inner">
         <div id="chart_div" style="width: 640px; height: 400px;"></div>
         <div class="table-filter">
-          Total: <%= companies.length %> contributors
+          Total: <%= companies.length %> companies listed
         </div>
 
         <table cellpadding="4" style="border: 1px solid #000000; border-collapse: collapse;" border="1">
@@ -119,7 +154,7 @@ __END__
  <% companies.each do |name, values| %>
  <tr>
   <td id="<%= name %>"><%= (lastMentions == values['mentions']) ? lastOrder : i %></td>
-  <td><%= values['link'] %> (<%= values['contributors'].length %> - <%= values['contributors'].map{|k,v| "#{k} [#{v}]"}.join(', ') %>) </td>
+  <td><%= values['link'] %> (<%= values['contributors'].length %> - <%= values['contributors'].map{|k,v| "<a href=\"http://dgo.to/@#{k}\">#{k}</a> [#{v}]"}.join(', ') %>) </td>
   <td><%= values['mentions'] %></td>
   <td><%= ((values['mentions']/sum)*100).round(4) %>%</td>
   <% if lastMentions != values['mentions'] %>

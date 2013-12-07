@@ -17,9 +17,10 @@ Once you have a git repo of drupal core in the drupal directory then you can run
 
 For the company list do:
 
-    gem install nokogiri
-    ./companies.rb
-    Takes a long time...
+    ./companies.rb > pages/companies.html
+
+Takes a long time for the first parsing... (~1.5h)
+After that it uses the company_mapping.yml and company_infos.yml. Delete to reset everything.
 
 View online:
  [DrupalCores](http://ericduran.github.com/drupalcores/)
