@@ -24,6 +24,7 @@ After that it uses the company_mapping.yml and company_infos.yml. Delete to rese
 
 View online:
  [DrupalCores](http://ericduran.github.com/drupalcores/)
+ [This Fork including Companies](http://attrib.github.io/drupalcores/)
 
 Do you only want the data?
  [BAM!!!](http://ericduran.github.io/drupalcores/data.json)

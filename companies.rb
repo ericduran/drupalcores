@@ -8,11 +8,16 @@ require 'open_uri_redirections'
 
 COMPANY_NOT_FOUND='not_found'
 COMPANY_NOT_DEFINED='not_defined'
+UPDATE_NONE=0
+UPDATE_NOT_FOUND=1
+UPDATE_ALL=1
 
 name_mappings = YAML::load_file('./name_mappings.yml')
 $companies_info = YAML::load_file('./company_infos.yml') || Hash.new(0)
 company_mapping = YAML::load_file('./company_mapping.yml') || Hash.new(0)
 contributors = Hash.new(0)
+name_variants = Hash.new(0)
+update=UPDATE_NOT_FOUND
 i = 1;
 lastOrder = -1;
 lastMentions = 0;
@@ -20,6 +25,7 @@ lastMentions = 0;
   m.gsub(/\-/, '_').scan(/\s(?:by\s?)([[:word:]\s,.|]+):/i).each do |people|
     people[0].split(/(?:,|\||\band\b|\bet al(?:.)?)/).each do |p|
       name = p.strip.downcase
+      name_variants[name] = p.strip unless p.strip == name
       contributors[name_mappings[name] || name] += 1 unless p.nil?
     end
   end
@@ -44,12 +50,18 @@ end
 count = 0
 contributors.sort_by {|k, v| v }.reverse.each do |name,mentions|
   if company_mapping.key? name
-    ensure_company(companies, company_mapping[name], 'should be filled via company infos', 'should be filled via company infos')
-    companies[company_mapping[name]]['mentions'] += mentions
-    companies[company_mapping[name]]['contributors'][name] = mentions
-    next
+    if update == UPDATE_NONE or (update == UPDATE_NOT_FOUND and company_mapping[name] != COMPANY_NOT_FOUND)
+      ensure_company(companies, company_mapping[name], 'should be filled via company infos', 'should be filled via company infos')
+      companies[company_mapping[name]]['mentions'] += mentions
+      companies[company_mapping[name]]['contributors'][name] = mentions
+      next
+    end
   end
-  url = "http://dgo.to/@#{name}"
+  if name_variants.key? name
+    url = "http://dgo.to/@#{name_variants[name]}"
+  else
+    url = "http://dgo.to/@#{name}"
+  end
   url = URI::encode(url)
 #  puts "#{name} has #{commits} commits with #{url} (#{i}/#{contributors.length})"
   begin
@@ -142,23 +154,30 @@ __END__
         <div id="chart_div" style="width: 640px; height: 400px;"></div>
         <div class="table-filter">
           Total: <%= companies.length %> companies listed
+          <ul>
+            <li><a href="index.html">List Contributors</a></li>
+            <li><a href="companies.html">List Companies</a></li>
+          </ul>
         </div>
 
-        <table cellpadding="4" style="border: 1px solid #000000; border-collapse: collapse;" border="1">
+        <table cellpadding="4" style="border: 1px solid #000000; border-collapse: collapse;" border="1" class="companies">
   <col width="5%">
-  <col width="65%">
+  <col width="50%">
+  <col width="15%">
   <col width="15%">
   <col width="15%">
  <tr>
  <th>#</th>
   <th>Company</th>
+  <th>Contributors</th>
   <th>Mentions</th>
   <th>Percent</th>
  </tr>
  <% companies.each do |name, values| %>
  <tr>
   <td id="<%= name %>"><%= (lastMentions == values['mentions']) ? lastOrder : i %></td>
-  <td><%= values['link'] %> (<%= values['contributors'].length %> - <%= values['contributors'].map{|k,v| "<a href=\"http://dgo.to/@#{k}\">#{k}</a> [#{v}]"}.join(', ') %>) </td>
+  <td><%= values['link'] %> <div class="employees" style="display: none"><%= values['contributors'].map{|k,v| "<a href=\"http://dgo.to/@#{k}\">#{k}</a> [#{v}]"}.join(', ') %></div></td>
+  <td><%= values['contributors'].length %></td>
   <td><%= values['mentions'] %></td>
   <td><%= ((values['mentions']/sum)*100).round(4) %>%</td>
   <% if lastMentions != values['mentions'] %>
