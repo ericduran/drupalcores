@@ -52,8 +52,12 @@ contributors.sort_by {|k, v| v }.reverse.each do |name,mentions|
   url = "http://dgo.to/@#{name}"
   url = URI::encode(url)
 #  puts "#{name} has #{commits} commits with #{url} (#{i}/#{contributors.length})"
-  html = open(url, :allow_redirections => :safe)
-  doc = Nokogiri::HTML(html)
+  begin
+    html = open(url, :allow_redirections => :safe)
+    doc = Nokogiri::HTML(html)
+  rescue
+    next
+  end
   found = true
   doc.css('title').each do |title|
     if title.text == 'Users | Drupal.org'
@@ -89,9 +93,9 @@ contributors.sort_by {|k, v| v }.reverse.each do |name,mentions|
     end
   end
   count += 1
-  if count > 5
-    break
-  end
+#  if count > 5
+#    break
+#  end
 end
 
 companies = companies.sort_by {|k, v| v['mentions'] }.reverse
