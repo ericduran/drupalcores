@@ -17,7 +17,17 @@ $companies_info = YAML::load_file('./company_infos.yml') || Hash.new(0)
 company_mapping = YAML::load_file('./company_mapping.yml') || Hash.new(0)
 contributors = Hash.new(0)
 name_variants = Hash.new(0)
-update=UPDATE_NOT_FOUND
+update=UPDATE_NONE
+if ARGV.length == 1
+  if ARGV[0] == '--update-all'
+    update=UPDATE_ALL
+  else
+    if ARGV[0] == '--update-not-found'
+      update=UPDATE_NOT_FOUND
+    end
+  end
+end
+
 i = 1;
 lastOrder = -1;
 lastMentions = 0;
@@ -169,6 +179,10 @@ __END__
       <section id="main_content" class="inner">
         <div id="chart_div" style="width: 640px; height: 400px;"></div>
         <div class="table-filter">
+          <p>
+            This list only shows information published on drupal.org and doesn't represent any kind of form
+            if people are doing their awesome contribution in their free time or company time.
+          </p>
           Total: <%= companies.length %> companies listed
           <ul>
             <li><a href="index.html">List Contributors</a></li>
