@@ -439,5 +439,10 @@ Custom Changes
 
 td img {
   width: auto;
-  display: block;
+  display: inline-block;
+}
+
+img.toggle {
+  float: right;
+  width: 24px;
 }
