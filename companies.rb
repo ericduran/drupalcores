@@ -74,9 +74,22 @@ contributors.sort_by {|k, v| v }.reverse.each do |name,mentions|
   doc.css('title').each do |title|
     if title.text == 'Users | Drupal.org'
       found = false
-      ensure_company(companies, COMPANY_NOT_FOUND, 'Users not found', 'Users not found')
-      companies[COMPANY_NOT_FOUND]['mentions'] += mentions
-      companies[COMPANY_NOT_FOUND]['contributors'][name] = mentions
+      results = doc.css('ol.user-results li h3 a')
+      # If we only have one results, its found ;)
+      if results.length == 1
+        begin
+          html = open(results.first['href'], :allow_redirections => :safe)
+          doc = Nokogiri::HTML(html)
+          found = true
+        rescue
+          found = false
+        end
+      end
+      unless found
+        ensure_company(companies, COMPANY_NOT_FOUND, 'Users not found', 'Users not found')
+        companies[COMPANY_NOT_FOUND]['mentions'] += mentions
+        companies[COMPANY_NOT_FOUND]['contributors'][name] = mentions
+      end
     end
   end
   if found
@@ -119,6 +132,9 @@ companies.each do |k, values|
   end
   values['contributors'].each do |name, mentions|
     company_mapping[name] = k
+  end
+  if values['contributors'].length == 0
+    $companies_info.delete(k)
   end
 end
 File.open('./company_infos.yml', 'w') { |f| YAML.dump($companies_info, f) }
@@ -176,15 +192,16 @@ __END__
  <% companies.each do |name, values| %>
  <tr>
   <td id="<%= name %>"><%= (lastMentions == values['mentions']) ? lastOrder : i %></td>
-  <td><%= values['link'] %> <div class="employees" style="display: none"><%= values['contributors'].map{|k,v| "<a href=\"http://dgo.to/@#{k}\">#{k}</a> [#{v}]"}.join(', ') %></div></td>
+  <td><%= values['link'] %> <img src="images/icon_info.png" alt="Info" title="Toggle employees" class="toggle"><div class="employees" style="display: none"><%= values['contributors'].map{|k,v| "<a href=\"http://dgo.to/@#{k}\">#{k}</a> [#{v}]"}.join(', ') %></div></td>
   <td><%= values['contributors'].length %></td>
-  <td><%= values['mentions'] %></td>
+  <td><%= values['mentions'] %> (~<%= values['mentions'] / values['contributors'].length %>)</td>
   <td><%= ((values['mentions']/sum)*100).round(4) %>%</td>
   <% if lastMentions != values['mentions'] %>
     <% lastOrder = i %>
   <% end %>
   <% i += 1 %>
-  <% lastMentions = values['mentions'] %></tr>
+  <% lastMentions = values['mentions'] %>
+ </tr>
  <% end %>
 
 </table>
@@ -223,6 +240,11 @@ __END__
   }
 
 </script>
-
+<script src="js/libs/jquery-1.7.1.min.js"></script>
+<script>
+  $('table.companies tr td .toggle').click(function() {
+    $(this).parent().find('.employees').toggle();
+  });
+</script>
   </body>
 </html>
