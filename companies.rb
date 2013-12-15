@@ -32,9 +32,9 @@ i = 1;
 lastOrder = -1;
 lastMentions = 0;
 %x[git --git-dir=drupal/.git --work-tree=drupal log 8.x --since=2011-03-09 -s --format=%s].split("\n").each do |m|
-  m.gsub(/\-/, '_').scan(/\s(?:by\s?)([[:word:]\s,.|]+):/i).each do |people|
+  m.scan(/\s(?:by\s?)([[:word:]\s,.|]+):/i).each do |people|
     people[0].split(/(?:,|\||\band\b|\bet al(?:.)?)/).each do |p|
-      name = p.strip.downcase
+      name = p.gsub(/\-/, '_').strip.downcase
       name_variants[name] = p.strip unless p.strip == name
       contributors[name_mappings[name] || name] += 1 unless p.nil?
     end
@@ -57,7 +57,6 @@ def ensure_company(companies, key, title, link)
   end
 end
 
-count = 0
 contributors.sort_by {|k, v| v }.reverse.each do |name,mentions|
   if company_mapping.key? name
     if update == UPDATE_NONE or (update == UPDATE_NOT_FOUND and company_mapping[name] != COMPANY_NOT_FOUND)
@@ -73,7 +72,6 @@ contributors.sort_by {|k, v| v }.reverse.each do |name,mentions|
     url = "http://dgo.to/@#{name}"
   end
   url = URI::encode(url)
-#  puts "#{name} has #{commits} commits with #{url} (#{i}/#{contributors.length})"
   begin
     html = open(url, :allow_redirections => :safe)
     doc = Nokogiri::HTML(html)
@@ -127,10 +125,6 @@ contributors.sort_by {|k, v| v }.reverse.each do |name,mentions|
       companies[COMPANY_NOT_DEFINED]['contributors'][name] = mentions
     end
   end
-  count += 1
-#  if count > 5
-#    break
-#  end
 end
 
 companies = companies.sort_by {|k, v| v['mentions'] }.reverse
@@ -179,10 +173,16 @@ __END__
       <section id="main_content" class="inner">
         <div id="chart_div" style="width: 640px; height: 400px;"></div>
         <div class="table-filter">
-          <p>
-            This list only shows information published on drupal.org and doesn't represent any kind of form
-            if people are doing their awesome contribution in their free time or company time.
-          </p>
+          <ul>
+          <li>The exposed data takes only into account the company that the contributor listed on his
+          drupal.org profile at the time this list has been curated, so it does not represent that the
+          company listed is the company that could have sponsored his contribution.</li>
+          <li>This list only reflects commit mentions by individuals. Not every commit mention is a valuable
+          as others. Is just a metric, so be careful when interpreting it.</li>
+          <li>There are plenty of other ways of contribution to the Drupal community as an individual or
+          organization. Please check <a href="https://drupal.org/contribute">https://drupal.org/contribute</a>
+          for ways of getting involved.</li>
+          </ul>
           Total: <%= companies.length %> companies listed
           <ul>
             <li><a href="index.html">List Contributors</a></li>

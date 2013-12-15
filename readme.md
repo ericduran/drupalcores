@@ -20,11 +20,13 @@ For the company list do:
     ./companies.rb > pages/companies.html
 
 Takes a long time for the first parsing... (~1.5h)
-After that it uses the company_mapping.yml and company_infos.yml. Delete to reset everything.
+After that it uses the company_mapping.yml and company_infos.yml.
+
+The companies.rb accepts a parameter to either force a update of all people and companies (--update-all)
+or to update people, which were not found (--update-not-found).
 
 View online:
  [DrupalCores](http://ericduran.github.com/drupalcores/)
- [This Fork including Companies](http://attrib.github.io/drupalcores/)
 
 Do you only want the data?
  [BAM!!!](http://ericduran.github.io/drupalcores/data.json)
