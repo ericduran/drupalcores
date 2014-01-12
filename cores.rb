@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+log_args = ARGV[0] || '--since=2011-03-09'
+git_command = 'git --git-dir=drupal/.git --work-tree=drupal log 8.x ' + log_args + ' -s --format=%s'
+
 Encoding.default_external = Encoding::UTF_8
 require 'erb'
 require 'yaml'
@@ -9,7 +12,7 @@ contributors = Hash.new(0)
 i = 1;
 lastOrder = -1;
 lastMentions = 0;
-%x[git --git-dir=drupal/.git --work-tree=drupal log 8.x --since=2011-03-09 -s --format=%s].split("\n").each do |m|
+%x[#{git_command}].split("\n").each do |m|
   m.gsub(/\-/, '_').scan(/\s(?:by\s?)([[:word:]\s,.|]+):/i).each do |people|
     people[0].split(/(?:,|\||\band\b|\bet al(?:.)?)/).each do |p|
       name = p.strip.downcase
