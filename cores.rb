@@ -52,6 +52,10 @@ __END__
         <div id="chart_div" style="width: 640px; height: 400px;"></div>
         <div class="table-filter">
           Total: <%= contributors.length %> contributors
+          <ul>
+            <li><a href="index.html">List Contributors</a></li>
+            <li><a href="companies.html">List Companies</a></li>
+          </ul>
         </div>
 
         <table cellpadding="4" style="border: 1px solid #000000; border-collapse: collapse;" border="1">

@@ -15,6 +15,15 @@ Once you have a git repo of drupal core in the drupal directory then you can run
 
     ./cores.rb
 
+For the company list do:
+
+    ./companies.rb > pages/companies.html
+
+Takes a long time for the first parsing... (~1.5h)
+After that it uses the company_mapping.yml and company_infos.yml.
+
+The companies.rb accepts a parameter to either force a update of all people and companies (--update-all)
+or to update people, which were not found (--update-not-found).
 
 View online:
  [DrupalCores](http://ericduran.github.com/drupalcores/)
