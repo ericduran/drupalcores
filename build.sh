@@ -1,5 +1,7 @@
 #!/bin/bash
 
+git pull
+
 echo "Updating Sub Repos"
 
 if [ ! -d "./drupal" ]; then
