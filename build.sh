@@ -22,6 +22,8 @@ fi
 
 ./cores.rb > ./pages/index.html
 ./companies.rb > ./pages/companies.html
+./json.rb > ./pages/data.json
+
 cd pages
 git commit -am "Update bump."
 git push
