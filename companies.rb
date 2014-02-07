@@ -174,9 +174,9 @@ __END__
         <div id="chart_div" style="width: 640px; height: 400px;"></div>
         <div class="table-filter">
           <ul>
-          <li>The exposed data only takes into account the company contributors have listed in their
-          drupal.org profile at the time the list was curated. It may not be an accurate representation
-          of the company that actually sponsored their contribution.</li>
+          <li>The exposed data only takes into account the company name that contributors have listed
+          in their drupal.org profile at the time the list was curated. It may not be an accurate
+          representation of the company that actually sponsored their contribution.</li>
           <li>This list only reflects commit mentions by individuals. Not every commit mention is a valuable
           as others. Is just a metric, so be careful when interpreting it.</li>
           <li>There are plenty of other ways of contribution to the Drupal community as an individual or
