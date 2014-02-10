@@ -436,3 +436,13 @@ Custom Changes
 .table-filter {
   padding-bottom: 15px;
 }
+
+td img {
+  width: auto;
+  display: inline-block;
+}
+
+img.toggle {
+  float: right;
+  width: 24px;
+}
