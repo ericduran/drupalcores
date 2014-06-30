@@ -118,7 +118,8 @@ __END__
    ['Task', 'Drupal core charts'],
    ['1 commit',<%= contributors.select {|k,v| v < 2}.length %>],
    ['2 - 10 commits',<%= contributors.select {|k,v| (v > 1 && v < 11) }.length %>],
-   ['Over 10 commits',<%= contributors.select {|k,v| v > 10}.length %>]
+   ['11 - 100 commits',<%= contributors.select {|k,v| (v > 10 && v < 101) }.length %>],
+   ['Over 100 commits',<%= contributors.select {|k,v| v > 100}.length %>]
   ];
   google.load("visualization", "1", {packages:["corechart"]});
   google.setOnLoadCallback(drawChart);
