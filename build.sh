@@ -1,5 +1,7 @@
 #!/bin/bash
 
+git pull
+
 echo "Updating Sub Repos"
 
 if [ ! -d "./drupal" ]; then
@@ -19,6 +21,9 @@ else
 fi
 
 ./cores.rb > ./pages/index.html
+./companies.rb > ./pages/companies.html
+./json.rb > ./pages/data.json
+
 cd pages
-#git commit -am "Update bump."
-#git push
+git commit -am "Update bump."
+git push
