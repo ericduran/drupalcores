@@ -31,7 +31,7 @@ end
 i = 1;
 lastOrder = -1;
 lastMentions = 0;
-%x[git --git-dir=drupal/.git --work-tree=drupal log --branches=origin/8.* --since=2011-03-09 -s --format=%s].split("\n").each do |m|
+%x[git --git-dir=drupal/.git --work-tree=drupal log --branches=8.* --remotes=origin --since=2011-03-09 -s --format=%s].split("\n").each do |m|
   m.scan(/\s(?:by\s?)([[:word:]\s,.|]+):/i).each do |people|
     people[0].split(/(?:,|\||\band\b|\bet al(?:.)?)/).each do |p|
       name = p.gsub(/\-/, '_').strip.downcase
