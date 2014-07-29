@@ -17,15 +17,16 @@ reverts = Array.new
 
 %x[#{git_command}].split("\n").each do |c|
   if c.index('Revert') == 0 then
-    reverts.push(c.scan(/Issue #([0-9]+)/))
+    reverts.push(c.scan(/#([0-9]+)/))
   else
     commits.push(c)
   end
 end
 
 commits.each_with_index do |c, i|
-  if reverts.include?(c.scan(/Issue #([0-9]+)/))
-    commits.delete(i)
+  if r = reverts.index{ |item| item == c.scan(/#([0-9]+)/) }
+    commits.delete_at(i)
+    reverts.delete_at(r)
   end
 end
 
