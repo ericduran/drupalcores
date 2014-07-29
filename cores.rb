@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 log_args = ARGV[0] || '--since=2011-03-09'
-git_command = 'git --git-dir=drupal/.git --work-tree=drupal log 8.x ' + log_args + ' -s --format=%s'
+git_command = 'git --git-dir=drupal/.git --work-tree=drupal log 8.0.x ' + log_args + ' -s --format=%s'
 
 Encoding.default_external = Encoding::UTF_8
 require 'erb'
