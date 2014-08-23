@@ -8,7 +8,7 @@ a flat html page for easy viewing for all the contributes and commit counts.
 ## Instructions
 First you need to clone a copy of the drupal 8 branch into your drupalcores directory
 
-    git clone --branch 8.x http://git.drupal.org/project/drupal.git
+    git clone --branch 8.0.x http://git.drupal.org/project/drupal.git
     git clone --branch gh-pages git@github.com:ericduran/drupalcores.git pages
 
 Once you have a git repo of drupal core in the drupal directory then you can run the cores.rb script
