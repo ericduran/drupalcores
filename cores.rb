@@ -76,6 +76,8 @@ __END__
           </ul>
         </div>
 
+        <p class="updated">Last updated <%= Time.new %></p>
+
         <table cellpadding="4" style="border: 1px solid #000000; border-collapse: collapse;" border="1">
   <col width="5%">
   <col width="65%">
@@ -106,7 +108,6 @@ __END__
 
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="updated">Last updated <%= Time.new %></p>
         <p class="copyright">DrupalCores maintained by <a href="https://github.com/ericduran">"ericduran" <3 ruby, lol</a></p>
         <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
