@@ -30,6 +30,13 @@ View online:
 Do you only want the data?
  [BAM!!!](http://www.drupalcores.com/data.json)
 
-##Help:
+## FAQ
 
-If you want to help please just fork the project and issue a pull request.
+### My credits are split between two or more names.
+[Name_mappings.yml](https://github.com/lauriii/drupalcores/blob/master/name_mappings.yml) is used to map incorrect names to the correct name. You can edit the file and submit a pull request.
+
+## I've changed companies but my commit credits are still listed under my old company.
+The contributor/company mappings are cached within [company_mapping.yml], which doesn't get updated automatically at the moment. It takes a long time to parse the data from drupal.org. You can update this yourself and submit a pull request by running the following command in the repo:
+
+    ./companies.rb --update-all > pages/companies.html
+
