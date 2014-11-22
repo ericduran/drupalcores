@@ -102,22 +102,25 @@ contributors.sort_by {|k, v| v }.reverse.each do |name,mentions|
   end
   if found
     found = false
-    doc.css('dt').each do |dt|
-      if dt.content == 'Current company or organization'
-        link = dt.next_element.child
-        if link.at_css('img')
-          company = link.at_css('img')['title']
-        else
-          company = link.child.text
-        end
-        company = company.strip
-        company_key = company.downcase
+    if company_wrapper = doc.at_css('.field-name-field-organization-name')
+      if company_wrapper.at_css('img')
+        link = company_wrapper.at_css('a')
         link['href'] = 'https://drupal.org' + link['href']
-        ensure_company(companies, company_key, company, link.to_s)
-        companies[company_key]['mentions'] += mentions
-        companies[company_key]['contributors'][name] = mentions
-        found = true
+        html = open(link['href'], :allow_redirections => :safe)
+        company_page = Nokogiri::HTML(html)
+        if company_title  = company_page.at_css('#page-subtitle')
+          company = company_title.text
+        end
       end
+      else
+        company = company_wrapper.text
+      end
+      company = company.strip
+      company_key = company.downcase
+      ensure_company(companies, company_key, company, link.to_s)
+      companies[company_key]['mentions'] += mentions
+      companies[company_key]['contributors'][name] = mentions
+      found = true
     end
     unless found
       ensure_company(companies, COMPANY_NOT_DEFINED, 'Not specified', 'Not specified')
