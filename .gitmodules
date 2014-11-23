@@ -1,0 +1,4 @@
+[submodule "pages"]
+	path = pages
+	url = https://github.com/lauriii/drupalcores.git
+	branch = gh-pages
