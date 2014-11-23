@@ -10,6 +10,7 @@ parts
 sdist
 develop-eggs
 .installed.cfg
+Gemfile.lock
 
 # Installer logs
 pip-log.txt
