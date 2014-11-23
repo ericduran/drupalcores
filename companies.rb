@@ -111,7 +111,6 @@ contributors.sort_by {|k, v| v }.reverse.each do |name,mentions|
         if company_title  = company_page.at_css('#page-subtitle')
           company = company_title.text
         end
-      end
       else
         company = company_wrapper.text
       end
