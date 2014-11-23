@@ -12,14 +12,6 @@ else
   cd ../
 fi
 
-if [ ! -d "./pages" ]; then
-  git clone --branch gh-pages git@github.com:ericduran/drupalcores.git pages
-else
-  cd ./pages
-  git pull
-  cd ..
-fi
-
 ./cores.rb > ./pages/index.html
 ./json.rb > ./pages/data.json
 
