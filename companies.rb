@@ -149,7 +149,7 @@ File.open('./company_mapping.yml', 'w') { |f| YAML.dump(company_mapping, f) }
 sum = contributors.values.reduce(:+).to_f
 puts ERB.new(DATA.readlines.join, 0, '>').result
 
-companies_template = File.open("companies.html.erb", 'r').read
+companies_template = File.open("templates/companies.html.erb", 'r').read
 renderer = ERB.new(companies_template)
 puts output = renderer.result()
 
