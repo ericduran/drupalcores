@@ -10,7 +10,7 @@ COMPANY_NOT_FOUND='not_found'
 COMPANY_NOT_DEFINED='not_defined'
 UPDATE_NONE=0
 UPDATE_NOT_FOUND=1
-UPDATE_ALL=1
+UPDATE_ALL=2
 
 name_mappings = YAML::load_file('./name_mappings.yml')
 $companies_info = YAML::load_file('./company_infos.yml') || Hash.new(0)
@@ -104,15 +104,24 @@ contributors.sort_by {|k, v| v }.reverse.each do |name,mentions|
     found = false
     if company_wrapper = doc.at_css('.field-name-field-organization-name')
       if company_wrapper.at_css('img')
-        link = company_wrapper.at_css('a')
-        link['href'] = 'https://drupal.org' + link['href']
-        html = open(link['href'], :allow_redirections => :safe)
-        company_page = Nokogiri::HTML(html)
-        if company_title  = company_page.at_css('#page-subtitle')
-          company = company_title.text
-        end
+        company = company_wrapper.at_css('img')['alt']
       else
         company = company_wrapper.text
+      end
+      if company_wrapper.at_css('a')
+        link = company_wrapper.at_css('a')
+        link['href'] = 'https://drupal.org' + link['href']
+        # If we still don't have the company name, follow the link to the page.
+        unless company
+          html = open(link['href'], :allow_redirections => :safe)
+          company_page = Nokogiri::HTML(html)
+          if company_title  = company_page.at_css('#page-subtitle')
+            company = company_title.text
+          end
+        end
+      else
+        # If there is no link, use the company name instead.
+        link = company
       end
       company = company.strip
       company_key = company.downcase
