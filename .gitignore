@@ -11,6 +11,7 @@ sdist
 develop-eggs
 .installed.cfg
 Gemfile.lock
+node_modules/
 
 # Installer logs
 pip-log.txt
