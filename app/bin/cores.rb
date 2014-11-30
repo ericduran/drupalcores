@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 
 log_args = ARGV[0] || '--since=2011-03-09'
-git_command = 'git --git-dir=drupal/.git --work-tree=drupal log 8.0.x ' + log_args + ' -s --format=%s'
+git_command = 'git --git-dir=../drupalcore/.git --work-tree=drupal log 8.0.x ' + log_args + ' -s --format=%s'
 
 Encoding.default_external = Encoding::UTF_8
 require 'erb'
 require 'yaml'
 
-name_mappings = YAML::load_file('./name_mappings.yml')
+name_mappings = YAML::load_file('../config/name_mappings.yml')
 contributors = Hash.new(0)
 i = 1;
 lastOrder = -1;
@@ -43,7 +43,7 @@ sum = contributors.values.reduce(:+).to_f
 contributors = Hash[contributors.sort_by {|k, v| v }.reverse]
 puts ERB.new(DATA.readlines.join, 0, '>').result
 
-index_template = File.open("templates/index.html.erb", 'r').read
+index_template = File.open("../templates/index.html.erb", 'r').read
 renderer = ERB.new(index_template)
 puts output = renderer.result()
 

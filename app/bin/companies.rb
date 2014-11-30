@@ -12,9 +12,9 @@ UPDATE_NONE=0
 UPDATE_NOT_FOUND=1
 UPDATE_ALL=2
 
-name_mappings = YAML::load_file('./name_mappings.yml')
-$companies_info = YAML::load_file('./company_infos.yml') || Hash.new(0)
-company_mapping = YAML::load_file('./company_mapping.yml') || Hash.new(0)
+name_mappings = YAML::load_file('../config/name_mappings.yml')
+$companies_info = YAML::load_file('../data/company_infos.yml') || Hash.new(0)
+company_mapping = YAML::load_file('../data/company_mapping.yml') || Hash.new(0)
 contributors = Hash.new(0)
 name_variants = Hash.new(0)
 update=UPDATE_NONE
@@ -31,7 +31,7 @@ end
 i = 1;
 lastOrder = -1;
 lastMentions = 0;
-%x[git --git-dir=drupal/.git --work-tree=drupal log 8.0.x --since=2011-03-09 -s --format=%s].split("\n").each do |m|
+%x[git --git-dir=../drupalcore/.git --work-tree=drupal log 8.0.x --since=2011-03-09 -s --format=%s].split("\n").each do |m|
   m.scan(/\s(?:by\s?)([[:word:]\s,.|]+):/i).each do |people|
     people[0].split(/(?:,|\||\band\b|\bet al(?:.)?)/).each do |p|
       name = p.gsub(/\-/, '_').strip.downcase
@@ -158,7 +158,7 @@ File.open('./company_mapping.yml', 'w') { |f| YAML.dump(company_mapping, f) }
 sum = contributors.values.reduce(:+).to_f
 puts ERB.new(DATA.readlines.join, 0, '>').result
 
-companies_template = File.open("templates/companies.html.erb", 'r').read
+companies_template = File.open("../templates/companies.html.erb", 'r').read
 renderer = ERB.new(companies_template)
 puts output = renderer.result()
 
