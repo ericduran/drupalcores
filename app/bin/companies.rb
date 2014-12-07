@@ -158,6 +158,9 @@ File.open('./company_mapping.yml', 'w') { |f| YAML.dump(company_mapping, f) }
 sum = contributors.values.reduce(:+).to_f
 puts ERB.new(DATA.readlines.join, 0, '>').result
 
+description = "A simple table of all contributors to Drupal 8 core"
+header = ERB.new(File.new("../templates/partials/header.html.erb").read).result(binding)
+footer = ERB.new(File.new("../templates/partials/footer.html.erb").read).result(binding)
 companies_template = File.open("../templates/companies.html.erb", 'r').read
 renderer = ERB.new(companies_template)
 puts output = renderer.result()
