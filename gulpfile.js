@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var usemin = require('gulp-usemin');
 var concat = require('gulp-concat');
+var minifycss = require('gulp-minify-css');
 var uglify = require('gulp-uglify');
 var imagemin = require('gulp-imagemin');
 var sourcemaps = require('gulp-sourcemaps');
@@ -40,8 +41,8 @@ gulp.task('sass',  ['clean'], function () {
 gulp.task('usemin', function () {
   return gulp.src('./dist/*.html')
       .pipe(usemin({
-        js: [uglify()]
-        // in this case css will be only concatenated (like css: ['concat']).
+        js: [uglify()],
+        css: [minifycss({keepBreaks:true})]
       }))
       .pipe(gulp.dest('dist/'));
 });
