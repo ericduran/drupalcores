@@ -9,6 +9,7 @@ var del = require('del');
 var sass = require('gulp-sass');
 var bower = require('gulp-bower');
 var runSequence = require('run-sequence');
+var shell = require('gulp-shell')
 
 var paths = {
   scripts: 'app/js/**/*.js',
@@ -16,8 +17,17 @@ var paths = {
   scss: 'app/scss/**/*.scss'
 };
 
+// Run bower install
 gulp.task('bower', function() {
-  return bower()
+  return bower();
+});
+
+
+// Clone or update drupalcore repo
+gulp.task('drupalcore', function () {
+  return gulp.src('')
+  .pipe(shell(['git clone --branch 8.0.x http://git.drupal.org/project/drupal.git ./app/drupalcore'],{ 'ignoreErrors': true}))
+  .pipe(shell(['git pull'],{ 'ignoreErrors': true, 'cwd': './app/drupalcore'}));
 });
 
 // Clean all assets
@@ -56,10 +66,8 @@ gulp.task('usemin', function () {
       .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('default', ['javascripts', 'images', 'sass']);
-
 gulp.task('default', function(callback) {
-  runSequence(['clean', 'bower'],
+  runSequence(['clean', 'bower', 'drupalcore'],
               ['javascripts', 'images', 'sass'],
               'usemin',
               callback);
