@@ -11,6 +11,7 @@ var bower = require('gulp-bower');
 var runSequence = require('run-sequence');
 var shell = require('gulp-shell');
 var minifyHTML = require('gulp-minify-html');
+var uncss = require('gulp-uncss');
 
 var paths = {
   scripts: 'app/js/**/*.js',
@@ -40,6 +41,12 @@ gulp.task('contributors', function () {
 gulp.task('companies', function () {
   return gulp.src('')
   .pipe(shell(['./companies.rb > ../../dist/companies.html'], { 'cwd': './app/bin'}));
+});
+
+// Build companies page
+gulp.task('companyinfo', function () {
+  return gulp.src('')
+  .pipe(shell(['./companies.rb --update-all > ../../dist/companies.html'], { 'cwd': './app/bin'}));
 });
 
 // Build json data
@@ -84,9 +91,19 @@ gulp.task('usemin', function () {
       .pipe(gulp.dest('dist/'));
 });
 
+
+// UNCSS
+gulp.task('uncss', function() {
+    return gulp.src('./css/style.css')
+        .pipe(uncss({
+            html: ['./dist/*.html']
+        }))
+        .pipe(gulp.dest('./css'));
+});
+
 // Minify HTML
 gulp.task('minifyhtml', function() {
-    var opts = {comments:true,spare:true};
+  var opts = {comments:true,spare:true};
 
   gulp.src('./dist/*.html')
     .pipe(minifyHTML(opts))
