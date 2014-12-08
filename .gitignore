@@ -12,11 +12,9 @@ develop-eggs
 .installed.cfg
 Gemfile.lock
 node_modules/
+app/js/libs/
 
 # Installer logs
 pip-log.txt
-
-# git repo that we parsing
-drupal/
 
 cores.db
