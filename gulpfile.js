@@ -87,8 +87,7 @@ gulp.task('usemin', function () {
 // The whole shebang
 gulp.task('default', function(callback) {
   runSequence(['clean', 'bower', 'drupalcore'],
-              ['contributors', 'json'],
-              ['javascripts', 'images', 'sass'],
+              ['contributors', 'companies', 'json', 'javascripts', 'images', 'sass'],
               'usemin',
               callback);
 });
