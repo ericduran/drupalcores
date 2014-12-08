@@ -6,6 +6,7 @@ git_command = 'git --git-dir=../drupalcore/.git --work-tree=drupal log 8.0.x ' +
 Encoding.default_external = Encoding::UTF_8
 require 'erb'
 require 'yaml'
+require 'time'
 
 name_mappings = YAML::load_file('../config/name_mappings.yml')
 contributors = Hash.new(0)
@@ -43,6 +44,7 @@ sum = contributors.values.reduce(:+).to_f
 contributors = Hash[contributors.sort_by {|k, v| v }.reverse]
 puts ERB.new(DATA.readlines.join, 0, '>').result
 
+time = Time.now()
 description = "A very basic table of all contributors to Drupal 8 Core"
 header = ERB.new(File.new("../templates/partials/header.html.erb").read).result(binding)
 footer = ERB.new(File.new("../templates/partials/footer.html.erb").read).result(binding)

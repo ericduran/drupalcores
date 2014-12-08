@@ -19,7 +19,7 @@
           </ul>
         </div>
 
-        <p class="updated">Last updated <%= Time.new %></p>
+        <p class="updated">Last updated <span class="timeago" title="<%= time.iso8601(10) %>"><%= time %></span></p>
         <table cellpadding="4" style="border: 1px solid #000000; border-collapse: collapse;" border="1" class="companies">
   <col width="5%">
   <col width="50%">
