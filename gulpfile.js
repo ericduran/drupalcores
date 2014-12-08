@@ -36,6 +36,12 @@ gulp.task('contributors', function () {
   .pipe(shell(['./cores.rb > ../../dist/index.html'], { 'cwd': './app/bin'}));
 });
 
+// Build companies page
+gulp.task('companies', function () {
+  return gulp.src('')
+  .pipe(shell(['./companies.rb > ../../dist/companies.html'], { 'cwd': './app/bin'}));
+});
+
 // Build json data
 gulp.task('json', function () {
   return gulp.src('')
