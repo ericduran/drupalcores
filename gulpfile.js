@@ -9,7 +9,8 @@ var del = require('del');
 var sass = require('gulp-sass');
 var bower = require('gulp-bower');
 var runSequence = require('run-sequence');
-var shell = require('gulp-shell')
+var shell = require('gulp-shell');
+var minifyHTML = require('gulp-minify-html');
 
 var paths = {
   scripts: 'app/js/**/*.js',
@@ -21,7 +22,6 @@ var paths = {
 gulp.task('bower', function() {
   return bower();
 });
-
 
 // Clone or update drupalcore repo
 gulp.task('drupalcore', function () {
@@ -84,10 +84,20 @@ gulp.task('usemin', function () {
       .pipe(gulp.dest('dist/'));
 });
 
+// Minify HTML
+gulp.task('minifyhtml', function() {
+    var opts = {comments:true,spare:true};
+
+  gulp.src('./dist/*.html')
+    .pipe(minifyHTML(opts))
+    .pipe(gulp.dest('./dist/'))
+});
+
 // The whole shebang
 gulp.task('default', function(callback) {
   runSequence(['clean', 'bower', 'drupalcore'],
               ['contributors', 'companies', 'json', 'javascripts', 'images', 'sass'],
               'usemin',
+              'minifyhtml',
               callback);
 });
