@@ -1,0 +1,21 @@
+{
+  "name": "drupalcores",
+  "version": "0.0.0",
+  "homepage": "https://github.com/lauriii/drupalcores",
+  "authors": [
+    "Lewis Nyman <hello@lewisnyman.co.uk>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/js/libs",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery-timeago": "~1.4.1",
+    "jquery": "~2.1.1"
+  }
+}
