@@ -30,6 +30,18 @@ gulp.task('drupalcore', function () {
   .pipe(shell(['git pull'],{ 'ignoreErrors': true, 'cwd': './app/drupalcore'}));
 });
 
+// Build contributors page
+gulp.task('contributors', function () {
+  return gulp.src('')
+  .pipe(shell(['./cores.rb > ../../dist/index.html'], { 'cwd': './app/bin'}));
+});
+
+// Build json data
+gulp.task('json', function () {
+  return gulp.src('')
+  .pipe(shell(['./json.rb > ../../dist/data.json'], { 'cwd': './app/bin'}));
+});
+
 // Clean all assets
 gulp.task('clean', function(cb) {
   return del(['dist/images', 'dist/js', 'dist/css'], cb);
@@ -66,8 +78,10 @@ gulp.task('usemin', function () {
       .pipe(gulp.dest('dist/'));
 });
 
+// The whole shebang
 gulp.task('default', function(callback) {
   runSequence(['clean', 'bower', 'drupalcore'],
+              ['contributors', 'json'],
               ['javascripts', 'images', 'sass'],
               'usemin',
               callback);
