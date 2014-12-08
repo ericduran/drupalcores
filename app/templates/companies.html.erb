@@ -52,11 +52,8 @@
 </table>
       </section>
     </div>
-
-<script src="js/libs/jquery-1.7.1.min.js"></script>
-<script>
-  $('table.companies tr td .toggle').click(function() {
-    $(this).parent().find('.employees').toggle();
-  });
-</script>
+<!-- build:js js/all.min.js -->
+<script src="js/libs/jquery/dist/jquery.min.js"></script>
+<script src="js/reveal-employees.js"></script>
+<!-- endbuild -->
 <%= footer %>
