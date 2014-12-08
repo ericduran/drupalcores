@@ -7,6 +7,8 @@ var imagemin = require('gulp-imagemin');
 var sourcemaps = require('gulp-sourcemaps');
 var del = require('del');
 var sass = require('gulp-sass');
+var bower = require('gulp-bower');
+var runSequence = require('run-sequence');
 
 var paths = {
   scripts: 'app/js/**/*.js',
@@ -14,10 +16,16 @@ var paths = {
   scss: 'app/scss/**/*.scss'
 };
 
-gulp.task('clean', function(cb) {
-  del(['dist/images', 'dist/js', 'dist/css'], cb);
+gulp.task('bower', function() {
+  return bower()
 });
 
+// Clean all assets
+gulp.task('clean', function(cb) {
+  return del(['dist/images', 'dist/js', 'dist/css'], cb);
+});
+
+// Copy all javascripts
 gulp.task('javascripts', ['clean'], function() {
   return gulp.src(paths.scripts)
   .pipe(gulp.dest('dist/js'));
@@ -33,11 +41,12 @@ gulp.task('images', ['clean'], function() {
 
 // Compile Sass
 gulp.task('sass',  ['clean'], function () {
-    gulp.src(paths.scss)
+    return gulp.src(paths.scss)
         .pipe(sass())
         .pipe(gulp.dest('dist/css'));
 });
 
+// Parse the html for groups of assets and compress
 gulp.task('usemin', function () {
   return gulp.src('./dist/*.html')
       .pipe(usemin({
@@ -48,3 +57,10 @@ gulp.task('usemin', function () {
 });
 
 gulp.task('default', ['javascripts', 'images', 'sass']);
+
+gulp.task('default', function(callback) {
+  runSequence(['clean', 'bower'],
+              ['javascripts', 'images', 'sass'],
+              'usemin',
+              callback);
+});
