@@ -10,11 +10,11 @@ COMPANY_NOT_FOUND='not_found'
 COMPANY_NOT_DEFINED='not_defined'
 UPDATE_NONE=0
 UPDATE_NOT_FOUND=1
-UPDATE_ALL=1
+UPDATE_ALL=2
 
-name_mappings = YAML::load_file('./name_mappings.yml')
-$companies_info = YAML::load_file('./company_infos.yml') || Hash.new(0)
-company_mapping = YAML::load_file('./company_mapping.yml') || Hash.new(0)
+name_mappings = YAML::load_file('../config/name_mappings.yml')
+$companies_info = YAML::load_file('../data/company_infos.yml') || Hash.new(0)
+company_mapping = YAML::load_file('../data/company_mapping.yml') || Hash.new(0)
 contributors = Hash.new(0)
 name_variants = Hash.new(0)
 update=UPDATE_NONE
@@ -31,7 +31,7 @@ end
 i = 1;
 lastOrder = -1;
 lastMentions = 0;
-%x[git --git-dir=drupal/.git --work-tree=drupal log 8.0.x --since=2011-03-09 -s --format=%s].split("\n").each do |m|
+%x[git --git-dir=../drupalcore/.git --work-tree=drupal log 8.0.x --since=2011-03-09 -s --format=%s].split("\n").each do |m|
   m.scan(/\s(?:by\s?)([[:word:]\s,.|]+):/i).each do |people|
     people[0].split(/(?:,|\||\band\b|\bet al(?:.)?)/).each do |p|
       name = p.gsub(/\-/, '_').strip.downcase
@@ -104,15 +104,24 @@ contributors.sort_by {|k, v| v }.reverse.each do |name,mentions|
     found = false
     if company_wrapper = doc.at_css('.field-name-field-organization-name')
       if company_wrapper.at_css('img')
-        link = company_wrapper.at_css('a')
-        link['href'] = 'https://drupal.org' + link['href']
-        html = open(link['href'], :allow_redirections => :safe)
-        company_page = Nokogiri::HTML(html)
-        if company_title  = company_page.at_css('#page-subtitle')
-          company = company_title.text
-        end
+        company = company_wrapper.at_css('img')['alt']
       else
         company = company_wrapper.text
+      end
+      if company_wrapper.at_css('a')
+        link = company_wrapper.at_css('a')
+        link['href'] = 'https://drupal.org' + link['href']
+        # If we still don't have the company name, follow the link to the page.
+        unless company
+          html = open(link['href'], :allow_redirections => :safe)
+          company_page = Nokogiri::HTML(html)
+          if company_title  = company_page.at_css('#page-subtitle')
+            company = company_title.text
+          end
+        end
+      else
+        # If there is no link, use the company name instead.
+        link = company
       end
       company = company.strip
       company_key = company.downcase
@@ -149,7 +158,7 @@ File.open('./company_mapping.yml', 'w') { |f| YAML.dump(company_mapping, f) }
 sum = contributors.values.reduce(:+).to_f
 puts ERB.new(DATA.readlines.join, 0, '>').result
 
-companies_template = File.open("companies.html.erb", 'r').read
+companies_template = File.open("../templates/companies.html.erb", 'r').read
 renderer = ERB.new(companies_template)
 puts output = renderer.result()
 
