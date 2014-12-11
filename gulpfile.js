@@ -27,32 +27,32 @@ gulp.task('bower', function() {
 // Clone or update drupalcore repo
 gulp.task('drupalcore', function () {
   return gulp.src('')
-  .pipe(shell(['git clone --branch 8.0.x http://git.drupal.org/project/drupal.git ./app/drupalcore'],{ 'ignoreErrors': true}))
-  .pipe(shell(['git pull'],{ 'ignoreErrors': true, 'cwd': './app/drupalcore'}));
+    .pipe(shell(['git clone --branch 8.0.x http://git.drupal.org/project/drupal.git ./app/drupalcore'],{ 'ignoreErrors': true}))
+    .pipe(shell(['git pull'],{ 'ignoreErrors': true, 'cwd': './app/drupalcore'}));
 });
 
 // Build contributors page
 gulp.task('contributors', function () {
   return gulp.src('')
-  .pipe(shell(['./cores.rb > ../../dist/index.html'], { 'cwd': './app/bin'}));
+    .pipe(shell(['./cores.rb > ../../dist/index.html'], { 'cwd': './app/bin'}));
 });
 
 // Build companies page
 gulp.task('companies', function () {
   return gulp.src('')
-  .pipe(shell(['./companies.rb > ../../dist/companies.html'], { 'cwd': './app/bin'}));
+    .pipe(shell(['./companies.rb > ../../dist/companies.html'], { 'cwd': './app/bin'}));
 });
 
 // Build companies page
 gulp.task('companyinfo', function () {
   return gulp.src('')
-  .pipe(shell(['./companies.rb --update-all > ../../dist/companies.html'], { 'cwd': './app/bin'}));
+    .pipe(shell(['./companies.rb --update-all > ../../dist/companies.html'], { 'cwd': './app/bin'}));
 });
 
 // Build json data
 gulp.task('json', function () {
   return gulp.src('')
-  .pipe(shell(['./json.rb > ../../dist/data.json'], { 'cwd': './app/bin'}));
+    .pipe(shell(['./json.rb > ../../dist/data.json'], { 'cwd': './app/bin'}));
 });
 
 // Clean all assets
@@ -63,7 +63,7 @@ gulp.task('clean', function(cb) {
 // Copy all javascripts
 gulp.task('javascripts', ['clean'], function() {
   return gulp.src(paths.scripts)
-  .pipe(gulp.dest('dist/js'));
+    .pipe(gulp.dest('dist/js'));
 });
 
 // Copy all static images
@@ -76,29 +76,29 @@ gulp.task('images', ['clean'], function() {
 
 // Compile Sass
 gulp.task('sass',  ['clean'], function () {
-    return gulp.src(paths.scss)
-        .pipe(sass())
-        .pipe(gulp.dest('dist/css'));
+  return gulp.src(paths.scss)
+    .pipe(sass())
+    .pipe(gulp.dest('dist/css'));
 });
 
 // Parse the html for groups of assets and compress
 gulp.task('usemin', function () {
   return gulp.src('./dist/*.html')
-      .pipe(usemin({
-        js: [uglify()],
-        css: [minifycss({keepBreaks:true})]
-      }))
-      .pipe(gulp.dest('dist/'));
+    .pipe(usemin({
+      js: [uglify()],
+      css: [minifycss({keepBreaks:true})]
+    }))
+    .pipe(gulp.dest('dist/'));
 });
 
 
 // UNCSS
 gulp.task('uncss', function() {
-    return gulp.src('./css/style.css')
-        .pipe(uncss({
-            html: ['./dist/*.html']
-        }))
-        .pipe(gulp.dest('./css'));
+  return gulp.src('./css/style.css')
+    .pipe(uncss({
+        html: ['./dist/*.html']
+    }))
+    .pipe(gulp.dest('./css'));
 });
 
 // Minify HTML
