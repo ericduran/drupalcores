@@ -46,7 +46,7 @@ gulp.task('companies', function () {
 // Build companies page
 gulp.task('companyinfo', function () {
   return gulp.src('')
-    .pipe(shell(['./companies.rb --update-all > ../../dist/companies.html'], { 'cwd': './app/bin'}));
+    .pipe(shell(['./companies.rb --update-all'], { 'cwd': './app/bin'}));
 });
 
 // Build json data
