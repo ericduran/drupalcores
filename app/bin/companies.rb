@@ -153,8 +153,8 @@ companies.each do |k, values|
     $companies_info.delete(k)
   end
 end
-File.open('./company_infos.yml', 'w') { |f| YAML.dump($companies_info, f) }
-File.open('./company_mapping.yml', 'w') { |f| YAML.dump(company_mapping, f) }
+File.open('../data/company_infos.yml', 'w') { |f| YAML.dump($companies_info, f) }
+File.open('../data/company_mapping.yml', 'w') { |f| YAML.dump(company_mapping, f) }
 
 sum = contributors.values.reduce(:+).to_f
 puts ERB.new(DATA.readlines.join, 0, '>').result
