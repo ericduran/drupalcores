@@ -229,7 +229,7 @@ Full-Width Styles
   padding: 20px 10px;
   margin: 0 auto;
 }
-#forkme_banner {
+.forkme-banner {
   display: block;
   position: absolute;
   top:0;
@@ -323,9 +323,6 @@ Small Device Styles
 /*********
 Custom Changes
 ************/
-.table-filter {
-  padding-bottom: 15px;
-}
 td img {
   width: auto;
   display: inline-block;
