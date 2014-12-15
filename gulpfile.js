@@ -103,7 +103,7 @@ gulp.task('usemin', function () {
 gulp.task('uncss', function() {
   return gulp.src('./css/style.css')
     .pipe(uncss({
-        html: ['./dist/*.html']
+      html: ['./dist/*.html']
     }))
     .pipe(gulp.dest('./css'));
 });
