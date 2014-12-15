@@ -1,11 +1,9 @@
 /*jshint strict:false */
 var gulp = require('gulp');
 var usemin = require('gulp-usemin');
-var concat = require('gulp-concat');
 var minifycss = require('gulp-minify-css');
 var uglify = require('gulp-uglify');
 var imagemin = require('gulp-imagemin');
-var sourcemaps = require('gulp-sourcemaps');
 var del = require('del');
 var sass = require('gulp-sass');
 var bower = require('gulp-bower');
@@ -116,7 +114,7 @@ gulp.task('minifyhtml', function() {
 
   gulp.src('./dist/*.html')
     .pipe(minifyHTML(opts))
-    .pipe(gulp.dest('./dist/'))
+    .pipe(gulp.dest('./dist/'));
 });
 
 // The whole shebang
