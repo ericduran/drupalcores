@@ -1,3 +1,4 @@
+/*jshint strict:false */
 var gulp = require('gulp');
 var usemin = require('gulp-usemin');
 var concat = require('gulp-concat');
@@ -16,7 +17,7 @@ var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
 
 var paths = {
-  scripts: 'app/js/**/*.js',
+  scripts: 'app/js/*.js',
   images: 'app/images/**/*',
   scss: 'app/scss/**/*.scss'
 };
@@ -27,7 +28,7 @@ gulp.task('bower', function() {
 });
 
 gulp.task('lint', function() {
-  return gulp.src(paths.scripts)
+  return gulp.src([paths.scripts, 'gulpfile.js'])
     .pipe(jshint())
     .pipe(jshint.reporter(stylish));
 });
