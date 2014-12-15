@@ -12,6 +12,8 @@ var runSequence = require('run-sequence');
 var shell = require('gulp-shell');
 var minifyHTML = require('gulp-minify-html');
 var uncss = require('gulp-uncss');
+var jshint = require('gulp-jshint');
+var stylish = require('jshint-stylish');
 
 var paths = {
   scripts: 'app/js/**/*.js',
@@ -22,6 +24,12 @@ var paths = {
 // Run bower install
 gulp.task('bower', function() {
   return bower();
+});
+
+gulp.task('lint', function() {
+  return gulp.src(paths.scripts)
+    .pipe(jshint())
+    .pipe(jshint.reporter(stylish));
 });
 
 // Clone or update drupalcore repo
