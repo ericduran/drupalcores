@@ -1,10 +1,9 @@
+/*jshint strict:false */
 var gulp = require('gulp');
 var usemin = require('gulp-usemin');
-var concat = require('gulp-concat');
 var minifycss = require('gulp-minify-css');
 var uglify = require('gulp-uglify');
 var imagemin = require('gulp-imagemin');
-var sourcemaps = require('gulp-sourcemaps');
 var del = require('del');
 var sass = require('gulp-sass');
 var bower = require('gulp-bower');
@@ -12,9 +11,11 @@ var runSequence = require('run-sequence');
 var shell = require('gulp-shell');
 var minifyHTML = require('gulp-minify-html');
 var uncss = require('gulp-uncss');
+var jshint = require('gulp-jshint');
+var stylish = require('jshint-stylish');
 
 var paths = {
-  scripts: 'app/js/**/*.js',
+  scripts: 'app/js/*.js',
   images: 'app/images/**/*',
   scss: 'app/scss/**/*.scss'
 };
@@ -22,6 +23,12 @@ var paths = {
 // Run bower install
 gulp.task('bower', function() {
   return bower();
+});
+
+gulp.task('lint', function() {
+  return gulp.src([paths.scripts, 'gulpfile.js'])
+    .pipe(jshint())
+    .pipe(jshint.reporter(stylish));
 });
 
 // Clone or update drupalcore repo
@@ -96,7 +103,7 @@ gulp.task('usemin', function () {
 gulp.task('uncss', function() {
   return gulp.src('./css/style.css')
     .pipe(uncss({
-        html: ['./dist/*.html']
+      html: ['./dist/*.html']
     }))
     .pipe(gulp.dest('./css'));
 });
@@ -107,7 +114,7 @@ gulp.task('minifyhtml', function() {
 
   gulp.src('./dist/*.html')
     .pipe(minifyHTML(opts))
-    .pipe(gulp.dest('./dist/'))
+    .pipe(gulp.dest('./dist/'));
 });
 
 // The whole shebang

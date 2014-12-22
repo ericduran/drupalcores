@@ -1,4 +1,4 @@
 $(function() {
-    "use strict";
-    $(".timeago").timeago();
+  'use strict';
+  $('.timeago').timeago();
 });
