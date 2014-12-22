@@ -15,7 +15,7 @@ var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
 
 var paths = {
-  scripts: 'app/js/*.js',
+  scripts: 'app/js/**/*.js',
   images: 'app/images/**/*',
   scss: 'app/scss/**/*.scss'
 };
