@@ -39,13 +39,13 @@ gulp.task('drupalcore', function () {
 });
 
 // Build contributors page
-gulp.task('contributors', function () {
+gulp.task('buildcontributors', function () {
   return gulp.src('')
     .pipe(shell(['./cores.rb > ../../dist/index.html'], { 'cwd': './app/bin'}));
 });
 
 // Build companies page
-gulp.task('companies', function () {
+gulp.task('buildcompanies', function () {
   return gulp.src('')
     .pipe(shell(['./companies.rb > ../../dist/companies.html'], { 'cwd': './app/bin'}));
 });
@@ -57,7 +57,7 @@ gulp.task('companyinfo', function () {
 });
 
 // Build json data
-gulp.task('json', function () {
+gulp.task('buildjson', function () {
   return gulp.src('')
     .pipe(shell(['./json.rb > ../../dist/data.json'], { 'cwd': './app/bin'}));
 });
@@ -120,7 +120,16 @@ gulp.task('minifyhtml', function() {
 // The whole shebang
 gulp.task('default', function(callback) {
   runSequence(['clean', 'bower', 'drupalcore'],
-              ['contributors', 'companies', 'json', 'javascripts', 'images', 'sass'],
+              ['buildcontributors', 'buildcompanies', 'json', 'javascripts', 'images', 'sass'],
+              'usemin',
+              'minifyhtml',
+              callback);
+});
+
+// Run contributors only, because companies can take ages the first time
+gulp.task('contributors', function(callback) {
+  runSequence(['clean', 'bower', 'drupalcore'],
+              ['buildcontributors', 'buildjson', 'javascripts', 'images', 'sass'],
               'usemin',
               'minifyhtml',
               callback);
