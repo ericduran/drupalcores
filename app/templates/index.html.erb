@@ -23,8 +23,8 @@
   <th>Percent</th>
  </tr>
  <% contributors.each do |name, mentions| %>
- <tr>
-  <td id="<%= name %>"><%= (lastMentions == mentions) ? lastOrder : i %></td>
+ <tr id="<%= name %>">
+  <td><%= (lastMentions == mentions) ? lastOrder : i %></td>
   <td><a href="https://www.drupal.org/u/<%= name.gsub ' ', '-' %>"><%= name %></a></td>
   <td><%= mentions %></td>
   <td><%= ((mentions/sum)*100).round(4) %>%</td>

@@ -34,7 +34,7 @@
   <th>Percent</th>
  </tr>
  <% companies.each do |name, values| %>
- <tr>
+ <tr id="<%= name %>">>
   <td id="<%= name %>"><%= (lastMentions == values['mentions']) ? lastOrder : i %></td>
   <td><%= values['link'] %> <img src="images/icon_info.png" alt="Info" title="Toggle employees" class="toggle">
     <table class="employees" style="display: none">
