@@ -323,6 +323,10 @@ Small Device Styles
 /*********
 Custom Changes
 ************/
+tr:target {
+  background: #FFFFE0;
+  font-size: 1.3em;
+}
 td img {
   width: auto;
   display: inline-block;
