@@ -36,7 +36,13 @@
  <% companies.each do |name, values| %>
  <tr>
   <td id="<%= name %>"><%= (lastMentions == values['mentions']) ? lastOrder : i %></td>
-  <td><%= values['link'] %> <img src="images/icon_info.png" alt="Info" title="Toggle employees" class="toggle"><div class="employees" style="display: none"><%= values['contributors'].map{|k,v| "<a href=\"http://dgo.to/@#{k}\">#{k}</a> [#{v}]"}.join(', ') %></div></td>
+  <td><%= values['link'] %> <img src="images/icon_info.png" alt="Info" title="Toggle employees" class="toggle">
+    <table class="employees" style="display: none">
+      <% values['contributors'].each do |contributor, mentions| %>
+      <tr><td><a href="http://dgo.to/@<%= contributor %>"><%= contributor %></a></td><td><%= mentions %></td></tr>
+      <% end %>
+    </table>
+  </td>
   <td><%= values['contributors'].length %></td>
   <td><%= values['mentions'] %> (~<%= values['mentions'] / values['contributors'].length %>)</td>
   <td><%= ((values['mentions']/sum)*100).round(4) %>%</td>
