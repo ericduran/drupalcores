@@ -120,7 +120,7 @@ gulp.task('minifyhtml', function() {
 // The whole shebang
 gulp.task('default', function(callback) {
   runSequence(['clean', 'bower', 'drupalcore'],
-              ['buildcontributors', 'buildcompanies', 'json', 'javascripts', 'images', 'sass'],
+              ['buildcontributors', 'buildcompanies', 'buildjson', 'javascripts', 'images', 'sass'],
               'usemin',
               'minifyhtml',
               callback);
