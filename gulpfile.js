@@ -39,7 +39,7 @@ gulp.task('drupalcore', function () {
 });
 
 // Build contributors page
-gulp.task('buildcontributors', function () {
+gulp.task('buildcontributors', ['buildjson'], function () {
   return gulp.src('')
     .pipe(shell(['./cores.rb > ../../dist/index.html'], { 'cwd': './app/bin'}));
 });
