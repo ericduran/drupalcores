@@ -45,7 +45,7 @@ gulp.task('buildcontributors', ['buildjson'], function () {
 });
 
 // Build companies page
-gulp.task('buildcompanies', function () {
+gulp.task('buildcompanies', ['buildjson'], function () {
   return gulp.src('')
     .pipe(shell(['./companies.rb > ../../dist/companies.html'], { 'cwd': './app/bin'}));
 });

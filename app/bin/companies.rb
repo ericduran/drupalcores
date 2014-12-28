@@ -6,6 +6,7 @@ require 'yaml'
 require 'nokogiri'
 require 'open_uri_redirections'
 require 'time'
+require 'json'
 
 COMPANY_NOT_FOUND='not_found'
 COMPANY_NOT_DEFINED='not_defined'
@@ -13,11 +14,9 @@ UPDATE_NONE=0
 UPDATE_NOT_FOUND=1
 UPDATE_ALL=2
 
-name_mappings = YAML::load_file('../config/name_mappings.yml')
+name_variants = Hash.new(0)
 $companies_info = YAML::load_file('../data/company_infos.yml') || Hash.new(0)
 company_mapping = YAML::load_file('../data/company_mapping.yml') || Hash.new(0)
-contributors = Hash.new(0)
-name_variants = Hash.new(0)
 update=UPDATE_NONE
 if ARGV.length == 1
   if ARGV[0] == '--update-all'
@@ -32,16 +31,9 @@ end
 i = 1;
 lastOrder = -1;
 lastMentions = 0;
-%x[git --git-dir=../drupalcore/.git --work-tree=drupal log 8.0.x --since=2011-03-09 -s --format=%s].split("\n").each do |m|
-  m.scan(/\s(?:by\s?)([[:word:]\s,.|]+):/i).each do |people|
-    people[0].split(/(?:,|\||\band\b|\bet al(?:.)?)/).each do |p|
-      name = p.gsub(/\-/, '_').strip.downcase
-      name_variants[name] = p.strip unless p.strip == name
-      contributors[name_mappings[name] || name] += 1 unless p.nil?
-    end
-  end
-end
-
+file = file = File.read('../../dist/data.json')
+data = JSON.parse(file)
+contributors = data['contributors']
 companies = Hash.new(0)
 
 def ensure_company(companies, key, title, link)
