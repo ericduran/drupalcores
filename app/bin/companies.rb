@@ -60,10 +60,11 @@ contributors.sort_by {|k, v| v }.reverse.each do |name,mentions|
     end
   end
   if name_variants.key? name
-    url = "http://dgo.to/@#{name_variants[name]}"
+    urlname = name_variants[name].gsub ' ', '-';
   else
-    url = "http://dgo.to/@#{name}"
+    urlname = name.gsub ' ', '-';
   end
+  url = "https://www.drupal.org/u/#{urlname}"
   url = URI::encode(url)
   begin
     html = open(url, :allow_redirections => :safe)
@@ -73,25 +74,14 @@ contributors.sort_by {|k, v| v }.reverse.each do |name,mentions|
   end
   found = true
   doc.css('title').each do |title|
-    if title.text == 'Users | Drupal.org'
+    if title.text == 'Page not found | Drupal.org'
       found = false
-      results = doc.css('ol.user-results li h3 a')
-      # If we only have one results, its found ;)
-      if results.length == 1
-        begin
-          html = open(results.first['href'], :allow_redirections => :safe)
-          doc = Nokogiri::HTML(html)
-          found = true
-        rescue
-          found = false
-        end
-      end
-      unless found
-        ensure_company(companies, COMPANY_NOT_FOUND, 'Users not found', 'Users not found')
-        companies[COMPANY_NOT_FOUND]['mentions'] += mentions
-        companies[COMPANY_NOT_FOUND]['contributors'][name] = mentions
-      end
     end
+  end
+  unless found
+    ensure_company(companies, COMPANY_NOT_FOUND, 'Users not found', 'Users not found')
+    companies[COMPANY_NOT_FOUND]['mentions'] += mentions
+    companies[COMPANY_NOT_FOUND]['contributors'][name] = mentions
   end
   if found
     found = false
