@@ -4,4 +4,5 @@ node_js:
 install:
   - npm install gulp -g
   - npm install
+  - bundle install
 script: gulp
