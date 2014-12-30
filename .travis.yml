@@ -5,4 +5,4 @@ install:
   - npm install gulp -g
   - npm install
   - bundle install
-script: travis_wait gulp
+script: gulp contributors
