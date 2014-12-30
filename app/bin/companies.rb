@@ -15,8 +15,16 @@ UPDATE_NOT_FOUND=1
 UPDATE_ALL=2
 
 name_variants = Hash.new(0)
-$companies_info = YAML::load_file('../data/company_infos.yml') || Hash.new(0)
-company_mapping = YAML::load_file('../data/company_mapping.yml') || Hash.new(0)
+if File.exists? ('../data/company_infos.yml')
+  $companies_info = YAML::load_file('../data/company_infos.yml')
+else
+  $companies_info = Hash.new(0)
+end
+if File.exists? ('../data/company_mapping.yml')
+  company_mapping = YAML::load_file('../data/company_mapping.yml') || Hash.new(0)
+else
+  company_mapping = Hash.new(0)
+end
 update=UPDATE_NONE
 if ARGV.length == 1
   if ARGV[0] == '--update-all'
