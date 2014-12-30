@@ -34,8 +34,7 @@ gulp.task('lint', function() {
 // Clone or update drupalcore repo
 gulp.task('drupalcore', function () {
   return gulp.src('')
-    .pipe(shell(['git clone --branch 8.0.x http://git.drupal.org/project/drupal.git ./app/drupalcore'],{ 'ignoreErrors': true}))
-    .pipe(shell(['git pull'],{ 'ignoreErrors': true, 'cwd': './app/drupalcore'}));
+    .pipe(shell(['git submodule update --init --recursive'],{ 'ignoreErrors': true}))
 });
 
 // Build contributors page
@@ -59,12 +58,12 @@ gulp.task('companyinfo', function () {
 // Build json data
 gulp.task('buildjson', function () {
   return gulp.src('')
-    .pipe(shell(['./json.rb > ../../dist/data.json'], { 'cwd': './app/bin'}));
+    .pipe(shell(['mkdir ../../dist', './json.rb > ../../dist/data.json'], { 'cwd': './app/bin'}));
 });
 
 // Clean all assets
 gulp.task('clean', function(cb) {
-  return del(['dist/images', 'dist/js', 'dist/css'], cb);
+  return del(['dist'], cb);
 });
 
 // Copy all javascripts
@@ -97,7 +96,6 @@ gulp.task('usemin', function () {
     }))
     .pipe(gulp.dest('dist/'));
 });
-
 
 // UNCSS
 gulp.task('uncss', function() {
