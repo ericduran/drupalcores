@@ -15,7 +15,7 @@ UPDATE_NOT_FOUND=1
 UPDATE_ALL=2
 
 name_variants = Hash.new(0)
-companies_info = YAML::load_file('../data/company_infos.yml') || Hash.new(0)
+$companies_info = YAML::load_file('../data/company_infos.yml') || Hash.new(0)
 company_mapping = YAML::load_file('../data/company_mapping.yml') || Hash.new(0)
 update=UPDATE_NONE
 if ARGV.length == 1
@@ -40,9 +40,9 @@ def ensure_company(companies, key, title, link)
   unless companies.key? key
     companies[key] = Hash.new(0)
     companies[key]['contributors'] = Hash.new(0)
-    if companies_info.key? key
-      companies[key]['title'] = companies_info[key]['title']
-      companies[key]['link'] = companies_info[key]['link']
+    if $companies_info.key? key
+      companies[key]['title'] = $companies_info[key]['title']
+      companies[key]['link'] = $companies_info[key]['link']
     else
       companies[key]['title'] = title
       companies[key]['link'] = link
@@ -123,19 +123,19 @@ end
 
 companies = companies.sort_by {|k, v| v['mentions'] }.reverse
 companies.each do |k, values|
-  unless companies_info.key? k
-    companies_info[k] = Hash.new(0)
-    companies_info[k]['title'] = values['title']
-    companies_info[k]['link'] = values['link']
+  unless $companies_info.key? k
+    $companies_info[k] = Hash.new(0)
+    $companies_info[k]['title'] = values['title']
+    $companies_info[k]['link'] = values['link']
   end
   values['contributors'].each do |name, mentions|
     company_mapping[name] = k
   end
   if values['contributors'].length == 0
-    companies_info.delete(k)
+    $companies_info.delete(k)
   end
 end
-File.open('../data/company_infos.yml', 'w') { |f| YAML.dump(companies_info, f) }
+File.open('../data/company_infos.yml', 'w') { |f| YAML.dump($companies_info, f) }
 File.open('../data/company_mapping.yml', 'w') { |f| YAML.dump(company_mapping, f) }
 
 sum = contributors.values.reduce(:+).to_f
