@@ -1,6 +1,10 @@
 {
-  "name": "railstest",
+  "name": "drupalcores",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/laurii/drupalcores.git"
+  },
   "devDependencies": {
     "del": "^0.1.3",
     "gulp": "^3.8.10",
