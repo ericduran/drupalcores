@@ -13,11 +13,13 @@ var minifyHTML = require('gulp-minify-html');
 var uncss = require('gulp-uncss');
 var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
+var gulpif = require('gulp-if');
 
 var paths = {
   scripts: 'app/js/**/*.js',
   images: 'app/images/**/*',
-  scss: 'app/scss/**/*.scss'
+  scss: 'app/scss/**/*.scss',
+  drupal: 'app/drupalcore'
 };
 
 // Run bower install
@@ -33,8 +35,10 @@ gulp.task('lint', function() {
 
 // Clone or update drupalcore repo
 gulp.task('drupalcore', function () {
+  var fs = require('fs');
+
   return gulp.src('')
-    .pipe(shell(['git clone --branch 8.0.x http://git.drupal.org/project/drupal.git ./app/drupalcore'],{ 'ignoreErrors': true}))
+    .pipe(gulpif(!fs.existsSync(paths.drupal), shell(['git clone --branch 8.0.x http://git.drupal.org/project/drupal.git ' + paths.drupal])))
     .pipe(shell(['git pull'],{ 'ignoreErrors': true, 'cwd': './app/drupalcore'}));
 });
 
