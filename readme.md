@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/lauriii/drupalcores.svg?branch=master)](https://travis-ci.org/lauriii/drupalcores)
 # DrupalCores
 ![count all the git commits](https://github.com/ericduran/drupalcores/raw/pystart/img.jpg)
 
