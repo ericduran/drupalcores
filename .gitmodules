@@ -1,8 +1,0 @@
-[submodule "pages"]
-  path = dist
-  url = https://github.com/lauriii/drupalcores.git
-  branch = gh-pages
-[submodule "core"]
-	path = app/drupalcore
-	url = http://git.drupal.org/project/drupal.git
-	branch = 8.0.x
