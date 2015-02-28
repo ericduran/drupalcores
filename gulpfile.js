@@ -63,12 +63,12 @@ gulp.task('companyinfo', function () {
 // Build json data
 gulp.task('buildjson', function () {
   return gulp.src('')
-    .pipe(shell(['./json.rb > ../../dist/data.json'], { 'cwd': './app/bin'}));
+    .pipe(shell(['mkdir ../../dist', './json.rb > ../../dist/data.json'], { 'cwd': './app/bin'}));
 });
 
 // Clean all assets
 gulp.task('clean', function(cb) {
-  return del(['dist/images', 'dist/js', 'dist/css'], cb);
+  return del(['dist'], cb);
 });
 
 // Copy all javascripts
@@ -101,7 +101,6 @@ gulp.task('usemin', function () {
     }))
     .pipe(gulp.dest('dist/'));
 });
-
 
 // UNCSS
 gulp.task('uncss', function() {
