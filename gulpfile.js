@@ -72,13 +72,13 @@ gulp.task('clean', function(cb) {
 });
 
 // Copy all javascripts
-gulp.task('javascripts', function() {
+gulp.task('javascripts', ['clean'], function() {
   return gulp.src(paths.scripts)
     .pipe(gulp.dest('dist/js'));
 });
 
 // Copy all static images
-gulp.task('images', function() {
+gulp.task('images', ['clean'], function() {
   return gulp.src(paths.images)
     // Pass in options to the task
     .pipe(imagemin({optimizationLevel: 5}))
@@ -86,7 +86,7 @@ gulp.task('images', function() {
 });
 
 // Compile Sass
-gulp.task('sass', function () {
+gulp.task('sass',  ['clean'], function () {
   return gulp.src(paths.scss)
     .pipe(sass())
     .pipe(gulp.dest('dist/css'));
@@ -122,7 +122,7 @@ gulp.task('minifyhtml', function() {
 
 // The whole shebang
 gulp.task('default', function(callback) {
-  runSequence(['bower', 'drupalcore'],
+  runSequence(['clean', 'bower', 'drupalcore'],
               ['buildcontributors', 'buildcompanies', 'buildjson', 'javascripts', 'images', 'sass'],
               'usemin',
               'minifyhtml',
@@ -131,7 +131,7 @@ gulp.task('default', function(callback) {
 
 // Run contributors only, because companies can take ages the first time
 gulp.task('contributors', function(callback) {
-  runSequence(['bower', 'drupalcore'],
+  runSequence(['clean', 'bower', 'drupalcore'],
               ['buildcontributors', 'buildjson', 'javascripts', 'images', 'sass'],
               'usemin',
               'minifyhtml',
