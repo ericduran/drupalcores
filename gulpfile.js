@@ -45,13 +45,13 @@ gulp.task('drupalcore', function () {
 // Build contributors page
 gulp.task('buildcontributors', ['buildjson'], function () {
   return gulp.src('')
-    .pipe(shell(['./cores.rb > ../../dist/index.html'], { 'cwd': './app/bin'}));
+    .pipe(shell(['./cores.rb > ../../tmp/index.html'], { 'cwd': './app/bin'}));
 });
 
 // Build companies page
 gulp.task('buildcompanies', ['buildjson'], function () {
   return gulp.src('')
-    .pipe(shell(['./companies.rb > ../../dist/companies.html'], { 'cwd': './app/bin'}));
+    .pipe(shell(['./companies.rb > ../../tmp/companies.html'], { 'cwd': './app/bin'}));
 });
 
 // Build companies page
@@ -69,22 +69,33 @@ gulp.task('buildcountries', ['buildjson'], function () {
 // Build json data
 gulp.task('buildjson', function () {
   return gulp.src('')
-    .pipe(shell(['mkdir ../../dist', './json.rb > ../../dist/data.json'], { 'cwd': './app/bin'}));
+    .pipe(shell(['mkdir ../../tmp', './json.rb > ../../tmp/data.json'], { 'cwd': './app/bin'}));
 });
 
-// Clean all assets
-gulp.task('clean', function(cb) {
+// Clean dist assets
+gulp.task('cleandist', function(cb) {
   return del(['dist'], cb);
 });
 
+// Clean tmp assets
+gulp.task('cleantmp', function(cb) {
+  return del(['tmp'], cb);
+});
+
+// Copy tmp to dist
+gulp.task('copytmpdist', function(cb) {
+  return gulp.src(['tmp/**/*'])
+    .pipe(gulp.dest('dist'));
+});
+
 // Copy all javascripts
-gulp.task('javascripts', ['clean'], function() {
+gulp.task('javascripts', ['cleantmp'], function() {
   return gulp.src(paths.scripts)
     .pipe(gulp.dest('dist/js'));
 });
 
 // Copy all static images
-gulp.task('images', ['clean'], function() {
+gulp.task('images', ['cleantmp'], function() {
   return gulp.src(paths.images)
     // Pass in options to the task
     .pipe(imagemin({optimizationLevel: 5}))
@@ -92,7 +103,7 @@ gulp.task('images', ['clean'], function() {
 });
 
 // Compile Sass
-gulp.task('sass',  ['clean'], function () {
+gulp.task('sass',  ['cleantmp'], function () {
   return gulp.src(paths.scss)
     .pipe(sass())
     .pipe(gulp.dest('dist/css'));
@@ -100,19 +111,19 @@ gulp.task('sass',  ['clean'], function () {
 
 // Parse the html for groups of assets and compress
 gulp.task('usemin', function () {
-  return gulp.src('./dist/*.html')
+  return gulp.src('./tmp/*.html')
     .pipe(usemin({
       js: [uglify()],
       css: [minifycss({keepBreaks:true})]
     }))
-    .pipe(gulp.dest('dist/'));
+    .pipe(gulp.dest('tmp/'));
 });
 
 // UNCSS
 gulp.task('uncss', function() {
   return gulp.src('./css/style.css')
     .pipe(uncss({
-      html: ['./dist/*.html']
+      html: ['./tmp/*.html']
     }))
     .pipe(gulp.dest('./css'));
 });
@@ -121,25 +132,31 @@ gulp.task('uncss', function() {
 gulp.task('minifyhtml', function() {
   var opts = {comments:true,spare:true};
 
-  gulp.src('./dist/*.html')
+  gulp.src('./tmp/*.html')
     .pipe(minifyHTML(opts))
-    .pipe(gulp.dest('./dist/'));
+    .pipe(gulp.dest('./tmp/'));
 });
 
 // The whole shebang
 gulp.task('default', function(callback) {
-  runSequence(['clean', 'bower', 'drupalcore'],
+  runSequence(['cleantmp', 'bower', 'drupalcore'],
+              'buildjson',
               ['buildcontributors', 'buildcompanies', 'buildcountries', 'javascripts', 'images', 'sass'],
               'usemin',
               'minifyhtml',
+              'cleandist',
+              'copytmpdist',
               callback);
 });
 
 // Run contributors only, because companies can take ages the first time
 gulp.task('contributors', function(callback) {
-  runSequence(['clean', 'bower', 'drupalcore'],
-              ['buildcontributors', 'buildjson', 'javascripts', 'images', 'sass'],
+  runSequence(['cleantmp', 'bower', 'drupalcore'],
+              'buildjson',
+              ['buildcontributors', 'javascripts', 'images', 'sass'],
               'usemin',
               'minifyhtml',
+              'cleandist',
+              'copytmpdist',
               callback);
 });
