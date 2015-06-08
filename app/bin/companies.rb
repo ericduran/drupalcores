@@ -40,7 +40,7 @@ end
 i = 1;
 lastOrder = -1;
 lastMentions = 0;
-file = file = File.read('../../dist/data.json')
+file = file = File.read('../../tmp/data.json')
 data = JSON.parse(file)
 contributors = data['contributors']
 companies = Hash.new(0)

@@ -43,13 +43,13 @@ gulp.task('drupalcore', function () {
 });
 
 // Build contributors page
-gulp.task('buildcontributors', ['buildjson'], function () {
+gulp.task('buildcontributors',  function () {
   return gulp.src('')
     .pipe(shell(['./cores.rb > ../../tmp/index.html'], { 'cwd': './app/bin'}));
 });
 
 // Build companies page
-gulp.task('buildcompanies', ['buildjson'], function () {
+gulp.task('buildcompanies', function () {
   return gulp.src('')
     .pipe(shell(['./companies.rb > ../../tmp/companies.html'], { 'cwd': './app/bin'}));
 });
@@ -84,33 +84,33 @@ gulp.task('cleantmp', function(cb) {
 
 // Copy tmp to dist
 gulp.task('copytmpdist', function(cb) {
-  return gulp.src(['tmp/**/*'])
-    .pipe(gulp.dest('dist'));
+  return gulp.src(['./tmp/**/*'])
+    .pipe(gulp.dest('./dist'));
 });
 
 // Copy all javascripts
-gulp.task('javascripts', ['cleantmp'], function() {
+gulp.task('javascripts', function() {
   return gulp.src(paths.scripts)
-    .pipe(gulp.dest('dist/js'));
+    .pipe(gulp.dest('tmp/js'));
 });
 
 // Copy all static images
-gulp.task('images', ['cleantmp'], function() {
+gulp.task('images', function() {
   return gulp.src(paths.images)
     // Pass in options to the task
     .pipe(imagemin({optimizationLevel: 5}))
-    .pipe(gulp.dest('dist/images'));
+    .pipe(gulp.dest('tmp/images'));
 });
 
 // Compile Sass
-gulp.task('sass',  ['cleantmp'], function () {
+gulp.task('sass', function() {
   return gulp.src(paths.scss)
     .pipe(sass())
-    .pipe(gulp.dest('dist/css'));
+    .pipe(gulp.dest('./tmp/css'));
 });
 
 // Parse the html for groups of assets and compress
-gulp.task('usemin', function () {
+gulp.task('usemin', ['sass', 'javascripts'], function () {
   return gulp.src('./tmp/*.html')
     .pipe(usemin({
       js: [uglify()],
@@ -134,7 +134,7 @@ gulp.task('minifyhtml', function() {
 
   gulp.src('./tmp/*.html')
     .pipe(minifyHTML(opts))
-    .pipe(gulp.dest('./tmp/'));
+    .pipe(gulp.dest('./tmp'));
 });
 
 // The whole shebang
