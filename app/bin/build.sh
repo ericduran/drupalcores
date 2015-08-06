@@ -12,7 +12,9 @@ else
   cd ../bin
 fi
 
-./cores.rb > ../../dist/index.html
-./json.rb > ../../dist/data.json
+./cores.rb > ../../dist/next.html
+./json.rb > ../../dist/next.json
 
 cd ../../dist
+mv next.html index.html
+mv next.json index.json
