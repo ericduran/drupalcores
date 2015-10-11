@@ -60,6 +60,12 @@ gulp.task('companyinfo', function () {
     .pipe(shell(['./companies.rb --update-all'], { 'cwd': './app/bin'}));
 });
 
+// Build countries page
+gulp.task('buildcountries', ['buildjson'], function () {
+  return gulp.src('')
+    .pipe(shell(['./countries.rb > ../../dist/countries.html'], { 'cwd': './app/bin'}));
+});
+
 // Build json data
 gulp.task('buildjson', function () {
   return gulp.src('')
@@ -123,7 +129,7 @@ gulp.task('minifyhtml', function() {
 // The whole shebang
 gulp.task('default', function(callback) {
   runSequence(['clean', 'bower', 'drupalcore'],
-              ['buildcontributors', 'buildcompanies', 'buildjson', 'javascripts', 'images', 'sass'],
+              ['buildcontributors', 'buildcompanies', 'buildcountries', 'javascripts', 'images', 'sass'],
               'usemin',
               'minifyhtml',
               callback);
