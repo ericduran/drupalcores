@@ -27,7 +27,7 @@
  <tr id="<%= name %>">
   <td><%= (lastMentions == mentions) ? lastOrder : i %></td>
   <td><a href="https://www.drupal.org/u/<%= name.gsub ' ', '-' %>"><%= name %></a></td>
-  <td><%= mentions %></td>
+  <td><a href="http://cgit.drupalcode.org/drupal/log/?qt=grep&q=<%= name.gsub ' ', '+' %>"><%= mentions %></a></td>
   <td><%= ((mentions/sum)*100).round(4) %>%</td>
   <% if lastMentions != mentions %>
     <% lastOrder = i %>
