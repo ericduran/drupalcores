@@ -15,6 +15,7 @@ UPDATE_NOT_FOUND=1
 UPDATE_ALL=2
 
 name_variants = Hash.new(0)
+Dir.mkdir('../data') unless Dir.exist?('../data')
 if File.exists? ('../data/company_infos.yml')
   companies_info = YAML::load_file('../data/company_infos.yml')
 else
