@@ -30,7 +30,10 @@
   <td><%= values['link'] %> <img src="images/icon_info.png" alt="Info" title="Toggle employees" class="toggle">
     <table class="employees" style="display: none">
       <% values['contributors'].each do |contributor, mentions| %>
-      <tr><td><a href="https://www.drupal.org/u/<%= contributor.gsub ' ', '-' %>"><%= contributor %></a></td><td><%= mentions %></td></tr>
+      <tr>
+        <td><a href="https://www.drupal.org/u/<%= contributor.gsub ' ', '-' %>"><%= contributor %></a></td>
+        <td><a href="http://cgit.drupalcode.org/drupal/log/?qt=grep&q=<%= contributor.gsub ' ', '+' %>"><%= mentions %></a></td>
+      </tr>
       <% end %>
     </table>
   </td>
