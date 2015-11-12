@@ -63,13 +63,19 @@ gulp.task('companyinfo', function () {
 // Build countries page
 gulp.task('buildcountries', function () {
   return gulp.src('')
-    .pipe(shell(['./countries.rb > ../../dist/countries.html'], { 'cwd': './app/bin'}));
+    .pipe(shell(['./countries.rb > ../../tmp/countries.html'], { 'cwd': './app/bin'}));
 });
 
 // Build json data
 gulp.task('buildjson', function () {
   return gulp.src('')
     .pipe(shell(['mkdir ../../tmp', './json.rb > ../../tmp/data.json'], { 'cwd': './app/bin'}));
+});
+
+// Populate test json data
+gulp.task('testjson', function () {
+  return gulp.src('')
+    .pipe(shell(['mkdir ./tmp', 'cp ./test/data.json ./tmp/data.json'], { 'cwd': './'}));
 });
 
 // Clean dist assets
