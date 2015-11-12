@@ -61,7 +61,7 @@ gulp.task('companyinfo', function () {
 });
 
 // Build countries page
-gulp.task('buildcountries', ['buildjson'], function () {
+gulp.task('buildcountries', function () {
   return gulp.src('')
     .pipe(shell(['./countries.rb > ../../dist/countries.html'], { 'cwd': './app/bin'}));
 });
