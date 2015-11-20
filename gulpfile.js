@@ -166,3 +166,15 @@ gulp.task('contributors', function(callback) {
               'copytmpdist',
               callback);
 });
+
+// The load test data instead of real data.
+gulp.task('test', function(callback) {
+  runSequence(['cleantmp', 'bower', 'drupalcore'],
+              'testjson',
+              ['buildcontributors', 'buildcompanies', 'buildcountries', 'javascripts', 'images', 'sass'],
+              'usemin',
+              'minifyhtml',
+              'cleandist',
+              'copytmpdist',
+              callback);
+});
