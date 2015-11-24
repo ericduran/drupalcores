@@ -43,15 +43,15 @@ gulp.task('drupalcore', function () {
 });
 
 // Build contributors page
-gulp.task('buildcontributors', ['buildjson'], function () {
+gulp.task('buildcontributors',  function () {
   return gulp.src('')
-    .pipe(shell(['./cores.rb > ../../dist/index.html'], { 'cwd': './app/bin'}));
+    .pipe(shell(['./cores.rb > ../../tmp/index.html'], { 'cwd': './app/bin'}));
 });
 
 // Build companies page
-gulp.task('buildcompanies', ['buildjson'], function () {
+gulp.task('buildcompanies', function () {
   return gulp.src('')
-    .pipe(shell(['./companies.rb > ../../dist/companies.html'], { 'cwd': './app/bin'}));
+    .pipe(shell(['./companies.rb > ../../tmp/companies.html'], { 'cwd': './app/bin'}));
 });
 
 // Build companies page
@@ -61,58 +61,75 @@ gulp.task('companyinfo', function () {
 });
 
 // Build countries page
-gulp.task('buildcountries', ['buildjson'], function () {
+gulp.task('buildcountries', function () {
   return gulp.src('')
-    .pipe(shell(['./countries.rb > ../../dist/countries.html'], { 'cwd': './app/bin'}));
+    .pipe(shell(['./countries.rb > ../../tmp/countries.html'], { 'cwd': './app/bin'}));
 });
 
 // Build json data
 gulp.task('buildjson', function () {
   return gulp.src('')
-    .pipe(shell(['mkdir ../../dist', './json.rb > ../../dist/data.json'], { 'cwd': './app/bin'}));
+    .pipe(shell(['mkdir ../../tmp', './json.rb > ../../tmp/data.json'], { 'cwd': './app/bin'}));
 });
 
-// Clean all assets
-gulp.task('clean', function(cb) {
+// Populate test json data
+gulp.task('testjson', function () {
+  return gulp.src('')
+    .pipe(shell(['mkdir ./tmp', 'cp ./test/data.json ./tmp/data.json'], { 'cwd': './'}));
+});
+
+// Clean dist assets
+gulp.task('cleandist', function(cb) {
   return del(['dist'], cb);
 });
 
+// Clean tmp assets
+gulp.task('cleantmp', function(cb) {
+  return del(['tmp'], cb);
+});
+
+// Copy tmp to dist
+gulp.task('copytmpdist', function(cb) {
+  return gulp.src(['./tmp/**/*'])
+    .pipe(gulp.dest('./dist'));
+});
+
 // Copy all javascripts
-gulp.task('javascripts', ['clean'], function() {
+gulp.task('javascripts', function() {
   return gulp.src(paths.scripts)
-    .pipe(gulp.dest('dist/js'));
+    .pipe(gulp.dest('tmp/js'));
 });
 
 // Copy all static images
-gulp.task('images', ['clean'], function() {
+gulp.task('images', function() {
   return gulp.src(paths.images)
     // Pass in options to the task
     .pipe(imagemin({optimizationLevel: 5}))
-    .pipe(gulp.dest('dist/images'));
+    .pipe(gulp.dest('tmp/images'));
 });
 
 // Compile Sass
-gulp.task('sass',  ['clean'], function () {
+gulp.task('sass', function() {
   return gulp.src(paths.scss)
     .pipe(sass())
-    .pipe(gulp.dest('dist/css'));
+    .pipe(gulp.dest('./tmp/css'));
 });
 
 // Parse the html for groups of assets and compress
-gulp.task('usemin', function () {
-  return gulp.src('./dist/*.html')
+gulp.task('usemin', ['sass', 'javascripts'], function () {
+  return gulp.src('./tmp/*.html')
     .pipe(usemin({
       js: [uglify()],
       css: [minifycss({keepBreaks:true})]
     }))
-    .pipe(gulp.dest('dist/'));
+    .pipe(gulp.dest('tmp/'));
 });
 
 // UNCSS
 gulp.task('uncss', function() {
   return gulp.src('./css/style.css')
     .pipe(uncss({
-      html: ['./dist/*.html']
+      html: ['./tmp/*.html']
     }))
     .pipe(gulp.dest('./css'));
 });
@@ -121,25 +138,43 @@ gulp.task('uncss', function() {
 gulp.task('minifyhtml', function() {
   var opts = {comments:true,spare:true};
 
-  gulp.src('./dist/*.html')
+  gulp.src('./tmp/*.html')
     .pipe(minifyHTML(opts))
-    .pipe(gulp.dest('./dist/'));
+    .pipe(gulp.dest('./tmp'));
 });
 
 // The whole shebang
 gulp.task('default', function(callback) {
-  runSequence(['clean', 'bower', 'drupalcore'],
+  runSequence(['cleantmp', 'bower', 'drupalcore'],
+              'buildjson',
               ['buildcontributors', 'buildcompanies', 'buildcountries', 'javascripts', 'images', 'sass'],
               'usemin',
               'minifyhtml',
+              'cleandist',
+              'copytmpdist',
               callback);
 });
 
 // Run contributors only, because companies can take ages the first time
 gulp.task('contributors', function(callback) {
-  runSequence(['clean', 'bower', 'drupalcore'],
-              ['buildcontributors', 'buildjson', 'javascripts', 'images', 'sass'],
+  runSequence(['cleantmp', 'bower', 'drupalcore'],
+              'buildjson',
+              ['buildcontributors', 'javascripts', 'images', 'sass'],
               'usemin',
               'minifyhtml',
+              'cleandist',
+              'copytmpdist',
+              callback);
+});
+
+// The load test data instead of real data.
+gulp.task('test', function(callback) {
+  runSequence(['cleantmp', 'bower', 'drupalcore'],
+              'testjson',
+              ['buildcontributors', 'buildcompanies', 'buildcountries', 'javascripts', 'images', 'sass'],
+              'usemin',
+              'minifyhtml',
+              'cleandist',
+              'copytmpdist',
               callback);
 });
