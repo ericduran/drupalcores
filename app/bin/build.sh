@@ -8,6 +8,7 @@ if [ ! -d "./app/drupalcore" ]; then
   git clone --branch 8.2.x http://git.drupal.org/project/drupal.git ./app/drupalcore
 else
   cd ./app/drupalcore
+  git checkout 8.2.x
   git pull
   cd ../bin
 fi
