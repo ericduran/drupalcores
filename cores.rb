@@ -13,18 +13,30 @@ i = 1;
 lastOrder = -1;
 lastMentions = 0;
 commits = Array.new
+issue_regexp = Regexp.new '#[0-9]+'
+reverts_regexp = Regexp.new '^Revert \"(?<credits>.+#[0-9]+.* by [^:]+:).*'
+reverts_regexp_loose = Regexp.new '^Revert .*(?<issue>#[0-9]+).*'
 reverts = Array.new
 
 %x[#{git_command}].split("\n").each do |c|
-  if c.index('Revert') == 0 then
-    reverts.push(c.scan(/#([0-9]+)/))
+  if c =~ reverts_regexp then
+    reverts.push(c[reverts_regexp, "credits"])
+  elsif c =~ reverts_regexp_loose then
+    reverts.push(c[reverts_regexp_loose, "issue"])
   else
     commits.push(c)
   end
 end
 
 commits.each_with_index do |c, i|
-  if r = reverts.index{ |item| item == c.scan(/#([0-9]+)/) }
+  if r = reverts.index{ |item| c.index(item) == 0 }
+    commits.delete_at(i)
+    reverts.delete_at(r)
+  end
+end
+
+commits.to_enum.with_index.reverse_each do |c, i|
+  if r = reverts.index{ |item| item[issue_regexp] == c[issue_regexp] }
     commits.delete_at(i)
     reverts.delete_at(r)
   end
