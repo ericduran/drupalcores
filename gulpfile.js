@@ -38,7 +38,7 @@ gulp.task('drupalcore', function () {
   var fs = require('fs');
 
   return gulp.src('')
-    .pipe(gulpif(!fs.existsSync(paths.drupal), shell(['git clone --branch 8.3.x http://git.drupal.org/project/drupal.git ' + paths.drupal])))
+    .pipe(gulpif(!fs.existsSync(paths.drupal), shell(['git clone --branch 8.4.x http://git.drupal.org/project/drupal.git ' + paths.drupal])))
     .pipe(shell(['git pull'],{ 'ignoreErrors': true, 'cwd': './app/drupalcore'}));
 });
 
