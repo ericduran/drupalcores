@@ -20,4 +20,5 @@ pip-log.txt
 cores.db
 app/data/company_infos.yml
 app/data/company_mapping.yml
+app/drupalcore
 tmp/
