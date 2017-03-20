@@ -60,7 +60,7 @@ def ensure_company(companies, companies_info, key, title, link)
 end
 
 contributors.sort_by {|k, v| v }.reverse.each do |name,mentions|
-  break if name == 'Not specified'
+  next if name == 'Not specified'
 
   if company_mapping.key? name
     if update == UPDATE_NONE or (update == UPDATE_NOT_FOUND and company_mapping[name] != COMPANY_NOT_FOUND)
