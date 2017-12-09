@@ -38,8 +38,8 @@ gulp.task('drupalcore', function () {
   var fs = require('fs');
 
   return gulp.src('')
-    .pipe(gulpif(!fs.existsSync(paths.drupal), shell(['git clone --branch 8.4.x http://git.drupal.org/project/drupal.git ' + paths.drupal])))
-    .pipe(shell(['git pull'],{ 'ignoreErrors': true, 'cwd': './app/drupalcore'}));
+    .pipe(gulpif(!fs.existsSync(paths.drupal), shell(['git clone http://git.drupal.org/project/drupal.git ' + paths.drupal])))
+    .pipe(shell(['git remote update', 'git checkout origin/HEAD'],{ 'ignoreErrors': true, 'cwd': './app/drupalcore'}));
 });
 
 // Build contributors page
