@@ -6,6 +6,12 @@ Ruby script to parse all the git commit, aggregate every users commit count and 
 a flat html page for easy viewing for all the contributes and commit counts.
 
 ## Instructions
+Install Ruby dependancies:
+
+Make sure you have [Bundler](http://bundler.io/) installed.
+
+    bundle install
+
 Install node dependancies:
 
     npm install
