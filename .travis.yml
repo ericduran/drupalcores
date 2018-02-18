@@ -1,7 +1,7 @@
 sudo: false
 language: node_js
 node_js:
-  - "0.10"
+  - "8"
 install:
   - npm install gulp -g
   - npm install
