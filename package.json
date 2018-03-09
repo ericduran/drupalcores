@@ -1,6 +1,7 @@
 {
   "name": "drupalcores",
   "version": "0.0.1",
+  "license" : "MIT",
   "repository": {
     "type": "git",
     "url": "git://github.com/laurii/drupalcores.git"
