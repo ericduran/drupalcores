@@ -39,7 +39,7 @@ gulp.task('drupalcore', function () {
 
   return gulp.src('')
     .pipe(gulpif(!fs.existsSync(paths.drupal), shell(['git clone http://git.drupal.org/project/drupal.git ' + paths.drupal])))
-    .pipe(shell(['git remote update', 'git checkout origin/HEAD'],{ 'ignoreErrors': true, 'cwd': './app/drupalcore'}));
+    .pipe(shell(['git remote update', 'git remote set-head origin -a', 'git checkout origin/HEAD'],{ 'ignoreErrors': true, 'cwd': './app/drupalcore'}));
 });
 
 // Build contributors page

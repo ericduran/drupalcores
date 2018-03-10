@@ -4,6 +4,8 @@ log_args = ARGV[0] || '--since=2011-03-09'
 git_command = <<-COMMANDS
 cd ../drupalcore
 git fetch
+git remote update
+git remote set-head origin -a
 git log origin/HEAD #{log_args} -s --format=%s
 cd ../bin
 COMMANDS
