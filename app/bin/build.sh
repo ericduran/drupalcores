@@ -9,6 +9,7 @@ if [ ! -d "./app/drupalcore" ]; then
 else
   cd ./app/drupalcore
   git remote update
+  git remote set-head origin -a
   git checkout origin/HEAD
   cd ../bin
 fi
