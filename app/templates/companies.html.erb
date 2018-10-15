@@ -3,8 +3,9 @@
       <section class="main-content inner">
         <div class="table-filter">
           <ul>
-          <li>The exposed data only takes into account the company name that contributors have listed
-          in their drupal.org profile at the time the list was curated. It may not be an accurate
+          <li>The exposed data only takes into account the company name that contributors have set as current
+          in their drupal.org profile at the time the list was curated. Only the first company marked as
+          current will be used, with the order being determined by drupal.org. It may not be an accurate
           representation of the company that actually sponsored their contribution.</li>
           <li>This list only reflects commit mentions by individuals. Not every commit mention is a valuable
           as others. Is just a metric, so be careful when interpreting it.</li>
@@ -36,7 +37,7 @@
  </tr>
  <% companies.each do |name, values| %>
  <tr id="<%= name %>">
-  <td id="<%= name %>"><%= (lastMentions == values['mentions']) ? lastOrder : i %></td>
+  <td><%= (lastMentions == values['mentions']) ? lastOrder : i %></td>
   <td><%= values['link'] %> <img src="images/icon_info.png" alt="Info" title="Toggle employees" class="toggle">
     <table class="employees" style="display: none">
       <% values['contributors'].each do |contributor, mentions| %>

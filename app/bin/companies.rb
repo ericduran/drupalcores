@@ -137,6 +137,7 @@ companies.each do |k, values|
     companies_info[k] = Hash.new(0)
     companies_info[k]['title'] = values['title']
     companies_info[k]['link'] = values['link']
+    companies_info[k]['id'] = values['id']
   end
   values['contributors'].each do |name, mentions|
     company_mapping[name] = k
