@@ -3,13 +3,14 @@
 Encoding.default_external = Encoding::UTF_8
 require 'erb'
 require 'yaml'
-require 'nokogiri'
 require 'open_uri_redirections'
 require 'time'
+require 'net/http'
 require 'json'
 
 COMPANY_NOT_FOUND='not_found'
 COMPANY_NOT_DEFINED='not_defined'
+COMPANY_NOT_SPECIFIED='Not specified'
 UPDATE_NONE=0
 UPDATE_NOT_FOUND=1
 UPDATE_ALL=2
@@ -45,90 +46,88 @@ data = JSON.parse(file)
 contributors = data['contributors']
 companies = Hash.new(0)
 
-def ensure_company(companies, companies_info, key, title, link)
+def ensure_company(companies, companies_info, key, title, link, id)
   unless companies.key? key
     companies[key] = Hash.new(0)
     companies[key]['contributors'] = Hash.new(0)
     if companies_info.key? key
       companies[key]['title'] = companies_info[key]['title']
       companies[key]['link'] = companies_info[key]['link']
+      companies[key]['id'] = companies_info[key]['id']
     else
       companies[key]['title'] = title
       companies[key]['link'] = link
+      companies[key]['id'] = id
     end
   end
 end
 
 contributors.sort_by {|k, v| v }.reverse.each do |name,mentions|
-  next if name == 'Not specified'
+  next if name == COMPANY_NOT_SPECIFIED
 
   if company_mapping.key? name
     if update == UPDATE_NONE or (update == UPDATE_NOT_FOUND and company_mapping[name] != COMPANY_NOT_FOUND)
-      ensure_company(companies, companies_info, company_mapping[name], 'should be filled via company infos', 'should be filled via company infos')
+      ensure_company(companies, companies_info, company_mapping[name], 'should be filled via company infos', 'should be filled via company infos', 0)
       companies[company_mapping[name]]['mentions'] += mentions
       companies[company_mapping[name]]['contributors'][name] = mentions
       next
     end
   end
   if name_variants.key? name
-    urlname = name_variants[name].gsub ' ', '-';
+    urlname = name_variants[name]
   else
-    urlname = name.gsub ' ', '-';
+    urlname = name
   end
-  url = "https://www.drupal.org/u/#{urlname}"
-  url = URI::encode(url)
+  url = URI::encode("https://www.drupal.org/api-d7/user.json?name=#{urlname}")
+  uri = URI(url)
   begin
-    html = open(url, :allow_redirections => :safe)
-    doc = Nokogiri::HTML(html)
+    response = Net::HTTP.get(uri)
+    user = JSON.parse(response)
   rescue
     next
   end
-  found = true
-  doc.css('title').each do |title|
-    if title.text == 'Page not found | Drupal.org'
-      found = false
-    end
+  found = false
+  if user['list'].count > 0
+    found = true
   end
   unless found
-    ensure_company(companies, companies_info, COMPANY_NOT_FOUND, 'Users not found', 'Users not found')
+    ensure_company(companies, companies_info, COMPANY_NOT_FOUND, 'Users not found', 'Users not found', 0)
     companies[COMPANY_NOT_FOUND]['mentions'] += mentions
     companies[COMPANY_NOT_FOUND]['contributors'][name] = mentions
-  end
-  if found
+  else
     found = false
-    if company_wrapper = doc.at_css('.field-name-field-organization-name')
-      if company_wrapper.at_css('img')
-        company = company_wrapper.at_css('img')['alt']
-      else
-        company = company_wrapper.text
-      end
-      if company_wrapper.at_css('a')
-        link = company_wrapper.at_css('a')
-        link['href'] = 'https://drupal.org' + link['href']
-        # If we still don't have the company name, follow the link to the page.
-        unless company
-          html = open(link['href'], :allow_redirections => :safe)
-          company_page = Nokogiri::HTML(html)
-          if company_title  = company_page.at_css('#page-subtitle')
-            company = company_title.text
-          end
+    organization = ''
+    for organization in user['list'][0]['field_organizations']
+      organization_uri = URI(organization['uri'].concat('.json'));
+      begin
+        organization_response = Net::HTTP.get(organization_uri)
+        organization = JSON.parse(organization_response)
+        if organization['field_current']
+          found = true
+          break
         end
-      else
-        # If there is no link, use the company name instead.
-        link = company
+      rescue
+        next
       end
-      company = company.strip
-      company_key = company.downcase
-      ensure_company(companies, companies_info, company_key, company, link.to_s)
-      companies[company_key]['mentions'] += mentions
-      companies[company_key]['contributors'][name] = mentions
-      found = true
     end
-    unless found
-      ensure_company(companies, companies_info, COMPANY_NOT_DEFINED, 'Not specified', 'Not specified')
-      companies[COMPANY_NOT_DEFINED]['mentions'] += mentions
-      companies[COMPANY_NOT_DEFINED]['contributors'][name] = mentions
+    if found
+      company = organization['field_organization_name']
+      if company.nil?
+        company = COMPANY_NOT_SPECIFIED
+      end
+      if organization['field_organization_reference'].nil?
+        company_id = 0;
+      else
+        company_id = organization['field_organization_reference']['id'].to_i
+      end
+    else
+      company = COMPANY_NOT_SPECIFIED
+      company_id = 0
     end
+    company_key = company.downcase
+    ensure_company(companies, companies_info, company_key, company, company, company_id)
+    companies[company_key]['mentions'] += mentions
+    companies[company_key]['contributors'][name] = mentions
   end
 end
 

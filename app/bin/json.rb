@@ -48,10 +48,10 @@ commits.to_enum.with_index.reverse_each do |c, i|
 end
 
 commits.each do |m|
-  m.gsub(/\-/, '_').scan(/\s(?:by\s?)([[:word:]\s,.@|]+):/i).each do |people|
-    people[0].split(/(?:,|\||\band\b|\bet al(?:.)?)/).each do |p|
-      name = p.strip.downcase
-      contributors[name_mappings[name] || name] += 1 unless p.nil?
+  m.scan(/\s(?:by\s?)([[:word:]\s,.@|\-]+):[^:]/i).each do |people|
+    people[0].split(/(?:,|\||\band\b|\bfollow[-]?up(?:\sby)?\b|\bet al(?:.)?)/).compact.reject(&:empty?).each do |p|
+      name = p.strip
+      contributors[name_mappings[name.downcase] || name] += 1 unless p.nil?
     end
   end
 end
