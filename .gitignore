@@ -4,6 +4,7 @@
 *.egg
 *.egg-info
 dist
+data
 build
 eggs
 parts

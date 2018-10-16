@@ -27,7 +27,7 @@
  <% notSpecified = (name === 'Not specified') %>
  <tr id="<%= name %>">
   <td><%= (lastMentions == mentions) ? lastOrder : i %></td>
-  <td><% if !notSpecified %><a href="https://www.drupal.org/u/<%= name.gsub ' ', '-' %>"><%= name %></a><% else %><%= name %><% end %>
+  <td><% if !notSpecified %><a href="https://www.drupal.org/u/<%= name.downcase.gsub ' ', '-' %>"><%= name %></a><% else %><%= name %><% end %>
   </td>
   <td><% if !notSpecified %><a href="http://cgit.drupalcode.org/drupal/log/?qt=grep&q=<%= name.gsub ' ', '+' %>"><%= mentions %></a><% else %><%= mentions %><% end %></td>
   <td><%= ((mentions/sum)*100).round(4) %>%</td>
