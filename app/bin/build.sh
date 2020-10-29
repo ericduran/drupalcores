@@ -5,7 +5,7 @@ git pull
 echo "Updating Sub Repos"
 
 if [ ! -d "./app/drupalcore" ]; then
-  git clone http://git.drupal.org/project/drupal.git ./app/drupalcore
+  git clone https://git.drupalcode.org/project/drupal.git ./app/drupalcore
 else
   cd ./app/drupalcore
   git remote update
